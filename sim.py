@@ -5,12 +5,6 @@ import sys
 import config
 from cow_sim import Cow_simulator
 
-
-#todo
-#meat price eid ul adha calculations
-#more cycling styles
-#more in-depth feed price when above 100 cattle
-
 #sim calculations
 def run2run(amount_cycles, amount_1, amount_2):
   amount_investment1 = [amount_1]
@@ -92,14 +86,14 @@ if not sys.argv[1]:
 if not sys.argv[2]:
    print("amount of cycles should be the first argument, and missing a amount invested as second argument as array")
 
-investment = [150000000, 150000000, 0, 150000000]
+investment = [300000000, 150000000, 0, 150000000]
 
 new_sim = Cow_simulator(investment[0])
 
 #optimal_time_frame(1, 20, 150000000, 10)
 
-err = new_sim.run_sim_cycle_strat( int(sys.argv[1]), 12, True )
+#err = new_sim.run_sim_cycle_strat( int(sys.argv[1]), 12, True )
 
-new_sim = Cow_simulator(investment[0])
+new_sim = Cow_simulator(int(sys.argv[2]))
 
 err = new_sim.run_sim( int(sys.argv[1]), True )

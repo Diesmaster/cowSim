@@ -4,8 +4,6 @@ import sys
 import config
 
 #todo
-#more cycling styles
-#more in-depth feed price when above 100 cattle
 
 class Cow_simulator:
     def __init__(self, invested):
@@ -35,6 +33,7 @@ class Cow_simulator:
         self.percentage_of_dry_matter_grass = config.percentage_of_dry_matter_grass
         self.percentage_of_grass_dry = config.percentage_of_grass_dry
         self.amount_max_capacity = config.amount_max_capacity
+        self.amount_change_to_cycle_strat = config.amount_change_to_cycle_strat
 
         #objt vars
         self.n_month = 0
@@ -177,7 +176,10 @@ class Cow_simulator:
       return self.amount_of_dry_feed_needed_daily_sim() * (self.percentage_of_dry_matter_grass / 100) * (100 / self.percentage_of_grass_dry) * 30
 
     def calculate_cow_feed_cost_sim(self):
-      return self.amount_of_concentrate_needed_cycle_sim() * self.price_of_concentraat + self.amount_of_grass_needed_cycle_sim() * self.price_of_grass
+      if self.amount_cows > 100:
+        return self.amount_of_concentrate_needed_cycle_sim() * self.price_of_concentraat_if_gt_100 + self.amount_of_grass_needed_cycle_sim() * self.price_of_grass
+      else:
+        return self.amount_of_concentrate_needed_cycle_sim() * self.price_of_concentraat + self.amount_of_grass_needed_cycle_sim() * self.price_of_grass
 
     def calculate_farm_hand_sim(self):
       return math.ceil(self.amount_cows / 25) * self.cost_of_farmhand
@@ -252,23 +254,6 @@ class Cow_simulator:
     def calculate_total_return(self, n_cows, amount_balance):
       return self.calculate_total_costs(n_cows) + amount_balance
 
-    #code
-    def run_sim(self, amount_cycles, verbose=False):
-      amount_used = 0
-      amount_cycles_max = 0
-      total_return = 0
-      res = {}
-
-      for x in range(0, amount_cycles*self.cycle_length):
-        res = self.pass_month()
-        self.push_month()
-
-        if verbose == True:  
-          print(self)
-
-      self.sell_cows(self.amount_cows) 
-      return res
-
     def push_pass_multiple_sims(self, sims):
         for x in range(0, len(sims)):
             res = sims[x].pass_month()
@@ -311,7 +296,7 @@ class Cow_simulator:
         self.amount_balance.append(split)
     
       new_sim = Cow_simulator(split)
-      new_sim.set_stage(0, 0, 0)
+      new_sim.set_stage(self.n_month, 0, 0, self.n_month)
       sims.append(new_sim)
 
 
@@ -323,19 +308,46 @@ class Cow_simulator:
       for x in range(0, amount_cycles*self.cycle_length):
         if x % self.cycle_devider >= len(sims):
             new_sim = Cow_simulator(split)
-            new_sim.set_stage(x, 0, 0, x)
+            new_sim.set_stage(self.n_month, 0, 0, self.n_month)
             sims.append(new_sim)
 
         self.push_pass_multiple_sims(sims)
         self.push_month()
 
-        print(self.add_list_to_parent(sims))        
+        new_sim = self.add_list_to_parent(sims)
+
+        print(new_sim)        
 
         #self.print_individually(sims)
 
         if verbose == True:  
-          print(self.add_list_to_parent(sims))
+          print(self.print_individually(sims))
 
       #self.sell_cows(self.amount_cows) 
 
-      return "true"
+      return {'error':'', 'cows':new_sim.amount_cows, 'balance':new_sim.amount_balance}
+
+
+    #code
+    def run_sim(self, amount_cycles, verbose=False):
+      amount_used = 0
+      amount_cycles_max = 0
+      total_return = 0
+      res = {}
+
+      for x in range(0, amount_cycles*self.cycle_length):
+        if self.amount_cows == 0:
+          test = self.amount_balance
+          if self.calculate_amount_of_cow_sim(0, test) > self.amount_change_to_cycle_strat:
+
+             res = self.run_sim_cycle_strat( int(amount_cycles-(x/self.cycle_length)), 12)
+             return res
+
+        res = self.pass_month()
+        self.push_month()
+
+        if verbose == True:  
+          print(self)
+
+      self.sell_cows(self.amount_cows) 
+      return res

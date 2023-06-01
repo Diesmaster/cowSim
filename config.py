@@ -25,3 +25,4 @@ percentage_of_concentraat_dry = 80
 percentage_of_dry_matter_grass = 40
 percentage_of_grass_dry = 20
 amount_max_capacity = 400
+amount_change_to_cycle_strat = 200
