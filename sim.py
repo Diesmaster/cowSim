@@ -98,6 +98,8 @@ new_sim = Cow_simulator(investment[0])
 
 #optimal_time_frame(1, 20, 150000000, 10)
 
-err = new_sim.run_sim_cycle_strat( int(sys.argv[1]) + 1, 4, [investment[0]], True )
+err = new_sim.run_sim_cycle_strat( int(sys.argv[1]), 12, True )
 
-#err = new_sim.run_sim( int(sys.argv[1]), [investment[0]], True )
+new_sim = Cow_simulator(investment[0])
+
+err = new_sim.run_sim( int(sys.argv[1]), True )
