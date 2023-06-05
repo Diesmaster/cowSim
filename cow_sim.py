@@ -13,10 +13,10 @@ class Cow_simulator:
         self.price_per_kg_normal = config.price_per_kg_normal
         self.my_share_low = config.my_share_low
         self.percentage_of_dry_matter = config.percentage_of_dry_matter
-        self.price_per_kg_eid = config.price_per_kg_eid
+        self.price_per_kg_eid_increase = config.price_per_kg_eid_increase
         self.my_share_high = config.my_share_high
         self.price_of_concentraat = config.price_of_concentraat
-        self.price_of_concentraat_if_gt_100 = config.price_of_concentraat_if_gt_100
+        self.price_of_concentraat_if_gt_100_decrease = config.price_of_concentraat_if_gt_100_decrease
         self.price_per_cow_250kg = config.price_per_cow_250kg
         self.price_of_grass = config.price_of_grass
         self.monthly_targeted_adg_kg_per_cattle = config.monthly_targeted_adg_kg_per_cattle
@@ -25,11 +25,8 @@ class Cow_simulator:
         self.cost_of_security_guard = config.cost_of_security_guard
         self.money_invested = config.money_invested
         self.cycle_length = config.cycle_length
-        self.total_daily_feed_cost = config.total_daily_feed_cost
         self.fermented_poop_price = config.fermented_poop_price
-        self.wet_poop_price = config.wet_poop_price
         self.percentage_poop_dry = config.percentage_poop_dry
-        self.cows_daily_poop_kg = config.cows_daily_poop_kg
         self.percentage_poop_fermented_weight_decrease = config.percentage_poop_fermented_weight_decrease
         self.percentage_of_dry_matter_concentraat = config.percentage_of_dry_matter_concentraat
         self.percentage_of_concentraat_dry = config.percentage_of_concentraat_dry
@@ -41,11 +38,12 @@ class Cow_simulator:
         #objt vars
         self.n_month = 0
         self.amount_cow_weight = 0
-        self.amount_balance = invested
-        self.amount_cows = 0
-        self.amount_of_cycles_per_year = 0;
+        self.amount_of_cycles_per_year = 0
         self.cycle_devider = self.cycle_length
-        self.cycle_start = 0;
+        
+        self.cycle_start = 0
+        self.amount_cows = 0
+        self.amount_balance = invested
 
 
     def __str__(self):
@@ -57,7 +55,9 @@ class Cow_simulator:
             return {'error': 'cannot add 2 sims that are in different months'}
 
         new_sim = Cow_simulator(self.amount_balance + other.amount_balance)
-        new_sim.set_stage(self.n_month, self.amount_cow_weight + other.amount_cow_weight, self.amount_cows + other.amount_cows)
+        new_sim.amount_cow_weight = self.amount_cow_weight + other.amount_cow_weight
+        new_sim.amount_cows =  self.amount_cows + other.amount_cows
+        new_sim.n_month = self.n_month
 
         return new_sim
 
@@ -70,14 +70,43 @@ class Cow_simulator:
         self.amount_cow_weight = other.amount_cow_weight
         self.amount_balance = other.amount_balance
 
-    def set_stage(self, month, cow_weight, cows, start=0):
-        self.n_month = month
-        self.amount_cow_weight = cow_weight
+    def set_stage(self, org_sim, cows, start=0):
+        #vars
         self.amount_cows = cows
         self.cycle_start = start
 
+        #copied:
+        self.n_month = org_sim.n_month
+        self.amount_cow_weight = org_sim.amount_cow_weight
+        self.amount_of_cycles_per_year = org_sim.amount_of_cycles_per_year
+        self.cycle_devider = org_sim.cycle_length
+
+        config_vars = dir(config)
+
+        for var_name in config_vars:
+            if not var_name.startswith("__"):  # Exclude built-in variables
+                var_value_conf = getattr(config, var_name)
+                var_value_other = getattr(org_sim, var_name)
+
+                if not var_value_conf == var_value_other:
+                    setattr(self, var_name, var_value_other)
+
+
     def get_balance(self):
         return self.amount_balance
+
+    def get_price_of_meat(self, month):
+        #check eid ul adha
+        if month == 5:
+            return self.price_per_kg_normal*((self.price_per_kg_eid_increase/100)+1)
+        else:
+            return self.price_per_kg_normal
+
+    def get_price_of_concentraat(self, n_cows):
+        if self.amount_cows > 100:
+            return ( (100 - self.price_of_concentraat_if_gt_100_decrease) /100)*self.price_of_concentraat
+        else:
+            return self.price_of_concentraat
 
     #setters
     def buy_cows(self, n_cows):
@@ -89,7 +118,10 @@ class Cow_simulator:
     def sell_cows(self, n_cows):
         revenue = self.calculate_cow_revenue_sim()
         self.amount_balance += revenue
-        self.amount_cow_weight -= (self.cattle_bought_at_kg + self.monthly_targeted_adg_kg_per_cattle*self.cycle_length )*n_cows
+        if(n_cows == self.amount_cows):
+            self.amount_cow_weight = 0
+        else:
+            self.amount_cow_weight -= (self.cattle_bought_at_kg + self.monthly_targeted_adg_kg_per_cattle*self.cycle_length )*n_cows
         self.amount_cows -= n_cows
 
     #used to test how many cows we can buy.
@@ -179,11 +211,8 @@ class Cow_simulator:
       return self.amount_of_dry_feed_needed_daily_sim() * (self.percentage_of_dry_matter_grass / 100) * (100 / self.percentage_of_grass_dry) * 30
 
     def calculate_cow_feed_cost_sim(self):
-      if self.amount_cows > 100:
-        return self.amount_of_concentrate_needed_cycle_sim() * self.price_of_concentraat_if_gt_100 + self.amount_of_grass_needed_cycle_sim() * self.price_of_grass
-      else:
-        return self.amount_of_concentrate_needed_cycle_sim() * self.price_of_concentraat + self.amount_of_grass_needed_cycle_sim() * self.price_of_grass
-
+        return self.amount_of_concentrate_needed_cycle_sim() * self.get_price_of_concentraat(self.amount_cows) + self.amount_of_grass_needed_cycle_sim() * self.price_of_grass
+  
     def calculate_farm_hand_sim(self):
       return math.ceil(self.amount_cows / 25) * self.cost_of_farmhand
 
@@ -213,7 +242,7 @@ class Cow_simulator:
       return self.calculate_amount_fermented_poop_sim() * self.fermented_poop_price * 30
 
     def calculate_cow_revenue_sim(self):
-      return self.amount_cow_weight * self.price_per_kg_normal[self.n_month % 12]
+      return self.amount_cow_weight * self.get_price_of_meat(self.n_month % 12)
 
     def calculate_total_revenue_sim(self):
       return self.calculate_cow_revenue_sim() + self.calculate_poop_revenue_sim()
@@ -228,10 +257,12 @@ class Cow_simulator:
             n_start += 1
             
             new_sim = Cow_simulator(total_money)
-            new_sim.set_stage(self.n_month, self.amount_cow_weight, n_start, self.n_month)
+            new_sim.set_stage(self, n_start)
+
+
             #print(new_sim)
             
-            for x in range(0, self.cycle_length):
+            for x in range(0, int(self.cycle_length)):
                 res = new_sim.pass_month_arg_cow(n_start)   
                 new_sim.push_month()
                 if not res['error'] == '':
@@ -262,17 +293,6 @@ class Cow_simulator:
             res = sims[x].pass_month()
             sims[x].push_month()
 
-
-    def get_config_vars(self):
-        config_vars = dir(config)
-
-        vars = {}
-        for var_name in config_vars:
-            if not var_name.startswith("__"):  # Exclude built-in variables
-                var_value = getattr(config, var_name)
-                vars[var_name] = var_value
-        
-        return vars
 
     def add_list_to_parent(self, sims):
         if len(sims) == 1:
@@ -310,7 +330,7 @@ class Cow_simulator:
         self.amount_balance.append(split)
     
       new_sim = Cow_simulator(split)
-      new_sim.set_stage(self.n_month, 0, 0, self.n_month)
+      new_sim.set_stage(self, 0, self.n_month)
       sims.append(new_sim)
 
 
@@ -319,10 +339,10 @@ class Cow_simulator:
       total_return = 0
       res = {}
 
-      for x in range(0, amount_cycles*self.cycle_length):
+      for x in range(0, int(amount_cycles*self.cycle_length)):
         if x % self.cycle_devider >= len(sims):
             new_sim = Cow_simulator(split)
-            new_sim.set_stage(self.n_month, 0, 0, self.n_month)
+            new_sim.set_stage(self, 0, self.n_month)
             sims.append(new_sim)
 
         self.push_pass_multiple_sims(sims)
@@ -330,14 +350,12 @@ class Cow_simulator:
 
         new_sim = self.add_list_to_parent(sims)
 
-        print(new_sim)        
-
-        #self.print_individually(sims)
-
         if verbose == True:  
           print(self.print_individually(sims))
 
-      #self.sell_cows(self.amount_cows) 
+      
+      new_sim.sell_cows(new_sim.amount_cows) 
+      #print(new_sim)
 
       return {'error':'', 'cows':new_sim.amount_cows, 'balance':new_sim.amount_balance}
 
@@ -349,7 +367,7 @@ class Cow_simulator:
       total_return = 0
       res = {}
 
-      for x in range(0, amount_cycles*self.cycle_length):
+      for x in range(0, int(amount_cycles*self.cycle_length)):
         if self.amount_cows == 0:
           test = self.amount_balance
           if self.calculate_amount_of_cow_sim(0, test) > self.amount_change_to_cycle_strat:

@@ -78,10 +78,62 @@ def optimal_time_frame(amount_cycles_minimum, amount_cycles_maximum, amount_mini
     
     print("average optimum for " + str(x) + ", invested: " + str(amount_invested/max_loop))
 
-def var_analysis(config_var_name, min, max, amount_of_increments, time_frame):
-  print("we are going to test the effect of var: " + str(config_var_name) + " by running the simulation over domain: " + str(min) + ", " + str(max))
+def var_analysis(config_var_name, min, max, amount_of_increments, time_frame, amount_invested, verbose=False):
+  if verbose  == True:
+    print("we are going to test the effect of var: " + str(config_var_name) + " by running the simulation over domain: " + str(min) + ", " + str(max))
+  
   std_value = getattr(config, config_var_name)
-  print("the standard value is: " + str(std_value) + ", " + "the time frame is: " + str(time_frame) + " cycles")
+  
+  if verbose  == True:
+    print("the standard value is: " + str(std_value) + ", " + "the time frame is: " + str(time_frame) + " cycles")
+  
+  diff = max - min 
+  incr_size = diff/amount_of_increments
+
+  ret = []
+
+  for x in range(0, amount_of_increments):
+    value = min + (x*incr_size)
+
+    new_sim = Cow_simulator(amount_invested)
+    
+    new_sim.set_config_value(config_var_name, value)
+
+    res = new_sim.run_sim(time_frame)
+    ret.append(res)
+    
+    if verbose  == True:
+      print("run " + str(x) + " is finsihed, with " + str(config_var_name) + ": " + str(value))
+
+  return ret
+
+def get_config_vars():
+    config_vars = dir(config)
+
+    vars = {}
+    for var_name in config_vars:
+        if not var_name.startswith("__"):  # Exclude built-in variables
+            var_value = getattr(config, var_name)
+            vars[var_name] = var_value
+    
+    return vars
+
+def all_vars_analysis(amount_of_increments, min_perc, max_perc, time_frame, amount_invested, filter_list, verbose=False):
+  vars = get_config_vars()
+
+  res = {}
+
+  for var in filter_list:
+    vars.pop(var)
+
+  for key in vars:
+    std_value = vars[key]
+    min_amount = std_value*(min_perc/100)
+    max_amount = std_value*(max_perc/100)
+
+    res[key] = var_analysis(key, min_amount, max_amount, amount_of_increments, time_frame, investment[0], verbose)
+
+  return res
 
 
 
@@ -92,19 +144,26 @@ if not sys.argv[2]:
 
 investment = [300000000, 150000000, 0, 150000000]
 
-new_sim = Cow_simulator(investment[0])
+filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg']
 
-vars = new_sim.get_config_vars()
+res = all_vars_analysis(100, 50, 200, 40, 150000000, filter_list, True)
 
-print(vars)
+print(res)
 
-keysList = [key for key in vars]
+#new_sim = Cow_simulator(investment[0])
+
+#vars = get_config_vars()
+
+#print(vars)
+
+#keysList = [key for key in vars]
 
 
-test = new_sim.set_config_value(keysList[0], "chris")
-print(test)
+#test = new_sim.set_config_value(keysList[0], "chris")
+#print(test)
 
-res = var_analysis(keysList[0], 500, 2000, 100, 40)
+#res = var_analysis(keysList[0], 500, 2000, 100, 40, investment[0], True)
+
 
 #optimal_time_frame(1, 20, 150000000, 10)
 
@@ -112,7 +171,7 @@ res = var_analysis(keysList[0], 500, 2000, 100, 40)
 
 #new_sim = Cow_simulator(int(sys.argv[2]))
 
-#err = new_sim.run_sim( int(sys.argv[1]), True )
+# err = new_sim.run_sim( int(sys.argv[1]), True )
 
 #todo: factor analysis
 
