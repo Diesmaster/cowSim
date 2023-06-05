@@ -3,7 +3,59 @@ import math
 import random
 import sys
 import config
+import csv
+from io import StringIO
 from cow_sim import Cow_simulator
+
+def flatten_dict(data, new_key=''):
+  flattened_data = []
+
+  if type(data) == type({}):
+    res = None
+    
+    for key, value in data.items():
+
+      if not new_key == '':
+        key = new_key + "_" + key
+      res1 = flatten_dict(value, key)
+      
+      if type(res1) == type({}):
+        if res == None:
+          res = res1
+        else:
+          res = { **res, **res1 }
+      else:
+        if res == None:
+          res = [res1]
+        else:
+          res.append(res1)
+    return res
+
+  elif type(data) == type([]):
+    ret = []
+    
+    for item in data:
+      res = flatten_dict(item, new_key)
+      ret.append(res)
+    return ret
+  else:
+    return {new_key:data}
+      
+
+  return flattened_data
+
+def dict_to_csv_parser(data):
+    data = flatten_dict(data)
+
+    csv_string = StringIO()
+    
+    for one_array in data:
+      writer = csv.DictWriter(csv_string, fieldnames=one_array[0].keys() if one_array else [])
+      writer.writeheader()
+      writer.writerows(one_array)
+
+    return csv_string.getvalue()
+
 
 #sim calculations
 def run2run(amount_cycles, amount_1, amount_2):
@@ -100,6 +152,7 @@ def var_analysis(config_var_name, min, max, amount_of_increments, time_frame, am
     new_sim.set_config_value(config_var_name, value)
 
     res = new_sim.run_sim(time_frame)
+    res['value'] = value
     ret.append(res)
     
     if verbose  == True:
@@ -135,6 +188,24 @@ def all_vars_analysis(amount_of_increments, min_perc, max_perc, time_frame, amou
 
   return res
 
+def analize_difference(to_be_analyzed, time_frame, amount_invested, verbose=False):
+  benchmark_sim = Cow_simulator(amount_invested)
+  benchmark_res = benchmark_sim.run_sim( time_frame )
+
+  res = []
+
+
+  for key in to_be_analyzed:
+    for x in range(0, len(to_be_analyzed[key])):
+      difference_perc = (to_be_analyzed[key][x]['balance']/benchmark_res['balance'])*100
+      balance_analysis = to_be_analyzed[key][x]['balance']
+      balance_benchmark = benchmark_res['balance']
+      value_analysis = to_be_analyzed[key][x]['value']
+      res_element = {'value_analysis':value_analysis, 'difference_perc':difference_perc, 'balance_analysis':balance_analysis, 'balance_benchmark':balance_benchmark}
+      print(res_element)
+      res.append(res_element)
+
+  return res
 
 
 if not sys.argv[1]:
@@ -146,9 +217,9 @@ investment = [300000000, 150000000, 0, 150000000]
 
 filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg']
 
-res = all_vars_analysis(100, 50, 200, 40, 150000000, filter_list, True)
+res = all_vars_analysis(100, 50, 200, 40, 150000000, filter_list, False)
 
-print(res)
+#print(res)
 
 #new_sim = Cow_simulator(investment[0])
 
@@ -161,8 +232,13 @@ print(res)
 
 #test = new_sim.set_config_value(keysList[0], "chris")
 #print(test)
+#res = {}
 
-#res = var_analysis(keysList[0], 500, 2000, 100, 40, investment[0], True)
+#res[keysList[0]] = var_analysis(keysList[0], 500, 2000, 10, 40, 150000000, True)
+
+#print(res)
+
+#res = analize_difference(res, 40, 150000000, True)
 
 
 #optimal_time_frame(1, 20, 150000000, 10)
@@ -170,18 +246,13 @@ print(res)
 #err = new_sim.run_sim_cycle_strat( int(sys.argv[1]), 12, True )
 
 #new_sim = Cow_simulator(int(sys.argv[2]))
+#new_sim.set_financials(True)
 
-# err = new_sim.run_sim( int(sys.argv[1]), True )
+#err = new_sim.run_sim( int(sys.argv[1]), False )
 
-#todo: factor analysis
+#financials = new_sim.get_financials()
 
-"""print( config.price_of_grass )
-config.price_of_grass = 1000
-print(config.price_of_grass)
+#print(res)
+print( dict_to_csv_parser(res) )
 
-variable_names = [name for name in dir(config) if not name.startswith('__')]
-
-# Print the variable names
-for name in variable_names:
-    print(name)
-    """
+#print(err) 

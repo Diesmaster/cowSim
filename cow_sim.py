@@ -34,6 +34,7 @@ class Cow_simulator:
         self.percentage_of_grass_dry = config.percentage_of_grass_dry
         self.amount_max_capacity = config.amount_max_capacity
         self.amount_change_to_cycle_strat = config.amount_change_to_cycle_strat
+        self.bool_financials = False
 
         #objt vars
         self.n_month = 0
@@ -44,6 +45,13 @@ class Cow_simulator:
         self.cycle_start = 0
         self.amount_cows = 0
         self.amount_balance = invested
+
+        #finance vars
+        self.amount_start_balance = 0;
+        self.amount_cows_bought_last = 0;
+        self.end_balance = 0
+        self.financials_per_cycle = []
+
 
 
     def __str__(self):
@@ -58,6 +66,10 @@ class Cow_simulator:
         new_sim.amount_cow_weight = self.amount_cow_weight + other.amount_cow_weight
         new_sim.amount_cows =  self.amount_cows + other.amount_cows
         new_sim.n_month = self.n_month
+        
+        new_sim.amount_start_balance = self.amount_start_balance + other.amount_start_balance;
+        new_sim.amount_cows_bought_last = self.amount_cows_bought_last + other.amount_cows_bought_last;
+        new_sim.end_balance = self.end_balance = other.end_balance
 
         return new_sim
 
@@ -69,6 +81,9 @@ class Cow_simulator:
         self.amount_cows = other.amount_cows
         self.amount_cow_weight = other.amount_cow_weight
         self.amount_balance = other.amount_balance
+        self.amount_start_balance = other.amount_start_balance;
+        self.amount_cows_bought_last = other.amount_cows_bought_last;
+        self.end_balance = other.end_balance
 
     def set_stage(self, org_sim, cows, start=0):
         #vars
@@ -150,6 +165,7 @@ class Cow_simulator:
 
         #calculate total profit end of month
         if( (self.n_month - self.cycle_start) % self.cycle_length) == 2:
+            self.end_balance = self.amount_balance
             self.sell_cows(self.amount_cows)
 
         if verbose == True:
@@ -164,9 +180,11 @@ class Cow_simulator:
 
         #buy the cows again beginning of month
         if( (self.n_month - self.cycle_start) % self.cycle_length) == 0:
+            self.amount_start_balance = self.amount_balance
             amount_used = self.amount_balance
             n_cows = self.calculate_amount_of_cow_sim(0, amount_used)
             self.buy_cows(n_cows)
+            self.amount_cows_bought_last = n_cows
 
         #add cow weight
         self.amount_cow_weight += self.amount_cows*self.monthly_targeted_adg_kg_per_cattle
@@ -184,12 +202,13 @@ class Cow_simulator:
 
         #calculate total profit end of month
         if( (self.n_month - self.cycle_start) % self.cycle_length) == 2:
+            self.end_balance = self.amount_balance
             self.sell_cows(self.amount_cows)
 
         if verbose == True:
             print("end-- of the month: " + str(self))
 
-        return {'error':'', 'cows':self.amount_cows, 'balance':self.amount_balance}
+        return self.get_sim_return_obj()
 
     def push_month(self):
         self.n_month += 1
@@ -257,13 +276,10 @@ class Cow_simulator:
             n_start += 1
             
             new_sim = Cow_simulator(total_money)
-            new_sim.set_stage(self, n_start)
-
-
-            #print(new_sim)
+            new_sim.set_stage(self, 0, self.cycle_start)
             
             for x in range(0, int(self.cycle_length)):
-                res = new_sim.pass_month_arg_cow(n_start)   
+                res = new_sim.pass_month_arg_cow(n_start)  
                 new_sim.push_month()
                 if not res['error'] == '':
                     return n_start -1
@@ -288,6 +304,9 @@ class Cow_simulator:
     def calculate_total_return(self, n_cows, amount_balance):
       return self.calculate_total_costs(n_cows) + amount_balance
 
+    def set_financials(self, financials=False):
+        self.bool_financials = financials
+
     def push_pass_multiple_sims(self, sims):
         for x in range(0, len(sims)):
             res = sims[x].pass_month()
@@ -310,6 +329,53 @@ class Cow_simulator:
         for x in range(0, len(sims)):
             print(sims[x])
 
+    def calculate_final_cost_per_cow(self):
+        cost = self.amount_start_balance - self.end_balance
+        cost_per_cow = cost/self.amount_cows_bought_last
+        return cost, cost_per_cow
+
+    def calculate_profit_per_cow(self):
+        profit = self.amount_balance - self.amount_start_balance
+        profit_per_cow = profit / self.amount_cows_bought_last
+        return profit, profit_per_cow
+
+    def calculate_margin(self, profit_per_cow, cost_per_cow):
+        return (profit_per_cow/cost_per_cow)*100
+
+    def calculate_annualized_IRR(self, margin):
+        return (((margin/100)+1)**(12/self.cycle_length))*100
+
+    def get_financials_per_cycle(self):
+        if self.n_month % self.cycle_length == 2:
+            financials = self.get_end_financials()
+            self.financials_per_cycle.append(financials)
+            return financials
+        else:
+            return ''
+
+    def get_financials(self):
+        return self.financials_per_cycle
+
+    def get_end_financials(self):
+        perc_IRR = (self.amount_balance / self.money_invested)*100
+
+        cost, cost_per_cow = self.calculate_final_cost_per_cow()
+
+        profit, profit_per_cow = self.calculate_profit_per_cow()
+
+        margin = self.calculate_margin(profit_per_cow, cost_per_cow)
+
+        annualized_IRR = self.calculate_annualized_IRR(margin)
+        
+        return {"total IRR":perc_IRR, "cost_per_cycle":cost, "cost_per_cow":cost_per_cow, "profit_per_cycle":profit, "profit_per_cow":profit_per_cow, "margin":margin, "annualized_IRR":annualized_IRR}
+
+    def get_sim_return_obj(self):
+        if self.bool_financials == False:
+            return {'error':'', 'cows':self.amount_cows, 'balance':self.amount_balance}
+        else:
+            financials = self.get_financials_per_cycle() 
+            return {'error':'', 'financials':financials, 'cows':self.amount_cows, 'balance':self.amount_balance}
+
     def run_sim_cycle_strat(self, amount_cycles, amount_of_cycles_per_year, verbose=False):
       if amount_of_cycles_per_year > 12:
         return {'error': 'Impossible amount of cycles'}
@@ -327,11 +393,11 @@ class Cow_simulator:
       sims = []
 
       for x in range(0, self.cycle_devider):
-        self.amount_balance.append(split)
-    
-      new_sim = Cow_simulator(split)
-      new_sim.set_stage(self, 0, self.n_month)
-      sims.append(new_sim)
+        self.amount_balance.append(split)    
+        new_sim = Cow_simulator(split)
+        new_sim.set_stage(self, 0, self.n_month)
+        new_sim.amount_max_capacity = self.amount_max_capacity/self.cycle_devider
+        sims.append(new_sim)
 
 
       amount_used = 0
@@ -357,7 +423,7 @@ class Cow_simulator:
       new_sim.sell_cows(new_sim.amount_cows) 
       #print(new_sim)
 
-      return {'error':'', 'cows':new_sim.amount_cows, 'balance':new_sim.amount_balance}
+      return new_sim.get_sim_return_obj()
 
 
     #code
@@ -377,6 +443,10 @@ class Cow_simulator:
 
         res = self.pass_month()
         self.push_month()
+
+        #if self.bool_financials == True:
+        #    if not res['financials'] == '':
+        #        print(res)
 
         if verbose == True:  
           print(self)
