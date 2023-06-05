@@ -4,6 +4,9 @@ import sys
 import config
 
 #todo
+# var analysis
+# financial stats
+# more indepth pricing models
 
 class Cow_simulator:
     def __init__(self, invested):
@@ -260,6 +263,17 @@ class Cow_simulator:
             sims[x].push_month()
 
 
+    def get_config_vars(self):
+        config_vars = dir(config)
+
+        vars = {}
+        for var_name in config_vars:
+            if not var_name.startswith("__"):  # Exclude built-in variables
+                var_value = getattr(config, var_name)
+                vars[var_name] = var_value
+        
+        return vars
+
     def add_list_to_parent(self, sims):
         if len(sims) == 1:
             return sims[0]
@@ -351,3 +365,10 @@ class Cow_simulator:
 
       self.sell_cows(self.amount_cows) 
       return res
+
+    def set_config_value(self, var_name, new_value):
+        setattr(self, var_name, new_value)
+        return getattr(self, var_name)
+
+
+

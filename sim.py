@@ -78,6 +78,10 @@ def optimal_time_frame(amount_cycles_minimum, amount_cycles_maximum, amount_mini
     
     print("average optimum for " + str(x) + ", invested: " + str(amount_invested/max_loop))
 
+def var_analysis(config_var_name, min, max, amount_of_increments, time_frame):
+  print("we are going to test the effect of var: " + str(config_var_name) + " by running the simulation over domain: " + str(min) + ", " + str(max))
+  std_value = getattr(config, config_var_name)
+  print("the standard value is: " + str(std_value) + ", " + "the time frame is: " + str(time_frame) + " cycles")
 
 
 
@@ -90,10 +94,35 @@ investment = [300000000, 150000000, 0, 150000000]
 
 new_sim = Cow_simulator(investment[0])
 
+vars = new_sim.get_config_vars()
+
+print(vars)
+
+keysList = [key for key in vars]
+
+
+test = new_sim.set_config_value(keysList[0], "chris")
+print(test)
+
+res = var_analysis(keysList[0], 500, 2000, 100, 40)
+
 #optimal_time_frame(1, 20, 150000000, 10)
 
 #err = new_sim.run_sim_cycle_strat( int(sys.argv[1]), 12, True )
 
-new_sim = Cow_simulator(int(sys.argv[2]))
+#new_sim = Cow_simulator(int(sys.argv[2]))
 
-err = new_sim.run_sim( int(sys.argv[1]), True )
+#err = new_sim.run_sim( int(sys.argv[1]), True )
+
+#todo: factor analysis
+
+"""print( config.price_of_grass )
+config.price_of_grass = 1000
+print(config.price_of_grass)
+
+variable_names = [name for name in dir(config) if not name.startswith('__')]
+
+# Print the variable names
+for name in variable_names:
+    print(name)
+    """
