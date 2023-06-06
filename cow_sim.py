@@ -34,7 +34,7 @@ class Cow_simulator:
         self.percentage_of_grass_dry = config.percentage_of_grass_dry
         self.amount_max_capacity = config.amount_max_capacity
         self.amount_change_to_cycle_strat = config.amount_change_to_cycle_strat
-        self.bool_financials = False
+        self.bool_financials = config.bool_financials
 
         #objt vars
         self.n_month = 0

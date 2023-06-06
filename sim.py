@@ -7,6 +7,8 @@ import csv
 from io import StringIO
 from cow_sim import Cow_simulator
 
+
+#JSON to csv data
 def flatten_dict(data, new_key=''):
   flattened_data = []
 
@@ -49,12 +51,57 @@ def dict_to_csv_parser(data):
 
     csv_string = StringIO()
     
+    big_array = [{}]
     for one_array in data:
-      writer = csv.DictWriter(csv_string, fieldnames=one_array[0].keys() if one_array else [])
-      writer.writeheader()
-      writer.writerows(one_array)
+      if type(one_array) == type([]) and len(one_array) > 1: 
+      
+        for index, small_array in enumerate(one_array):
+          if len(big_array) <= index:
+            big_array.append(small_array) 
+          elif type(big_array[index]) == type({}):
+            big_array[index] = {**big_array[index], **small_array}
+          else:
+            big_array[index] = small_array
 
+      
+      
+      else:
+        writer = csv.DictWriter(csv_string, fieldnames=one_array[0].keys() if one_array else [])
+        writer.writeheader()
+        writer.writerows(one_array)
+        return csv_string.getvalue()
+
+    writer = csv.DictWriter(csv_string, fieldnames=big_array[0].keys() if big_array else [])
+    writer.writeheader()
+    writer.writerows(big_array)
     return csv_string.getvalue()
+
+def res_to_data(res, list_wants):
+  ret = None
+  if type(res) == type({}):
+    ret = {}
+    for key, value in res.items():
+      pass_on = {}
+      pass_on[key] = value
+      
+      for want in list_wants:
+        if want == key:
+          ret[key] = value
+      
+      ret1 = res_to_data(value, list_wants)
+      if not ret1 == {}:    
+        ret[key] = res_to_data(value, list_wants)
+
+    return ret
+  elif type(res) == type([]):
+    ret = []
+    for value in res: 
+      ret.append(res_to_data(value, list_wants))
+    return ret
+  else:
+    return {}
+
+  return ret
 
 
 #sim calculations
@@ -215,9 +262,9 @@ if not sys.argv[2]:
 
 investment = [300000000, 150000000, 0, 150000000]
 
-filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg']
+filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg', 'bool_financials']
 
-res = all_vars_analysis(100, 50, 200, 40, 150000000, filter_list, False)
+res = all_vars_analysis(2, 50, 200, 2, 150000000, filter_list, False)
 
 #print(res)
 
@@ -252,7 +299,10 @@ res = all_vars_analysis(100, 50, 200, 40, 150000000, filter_list, False)
 
 #financials = new_sim.get_financials()
 
-#print(res)
-print( dict_to_csv_parser(res) )
+list_wants = ['margin', 'total IRR', 'value']
+
+print(res)
+print(res_to_data(res, list_wants))
+#print( dict_to_csv_parser(res) )
 
 #print(err) 
