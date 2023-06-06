@@ -6,6 +6,7 @@ import config
 import csv
 from io import StringIO
 from cow_sim import Cow_simulator
+from financial_models import Financial_model
 
 
 #JSON to csv data
@@ -260,49 +261,21 @@ if not sys.argv[1]:
 if not sys.argv[2]:
    print("amount of cycles should be the first argument, and missing a amount invested as second argument as array")
 
-investment = [300000000, 150000000, 0, 150000000]
+new_sim = Cow_simulator(150000000)
+fin_mod = Financial_model()
 
-filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg', 'bool_financials']
+new_sim.import_fin_module(fin_mod)
+res = new_sim.run_sim(40, 150000000)
+res = fin_mod.get_value_models(new_sim)
+print(res['EMA'])
 
-res = all_vars_analysis(2, 50, 200, 2, 150000000, filter_list, False)
+#filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg', 'bool_financials']
 
-#print(res)
+#res = all_vars_analysis(2, 50, 200, 2, 150000000, filter_list, False)
 
-#new_sim = Cow_simulator(investment[0])
+#list_wants = ['margin', 'total IRR', 'value']
 
-#vars = get_config_vars()
-
-#print(vars)
-
-#keysList = [key for key in vars]
-
-
-#test = new_sim.set_config_value(keysList[0], "chris")
-#print(test)
-#res = {}
-
-#res[keysList[0]] = var_analysis(keysList[0], 500, 2000, 10, 40, 150000000, True)
-
-#print(res)
-
-#res = analize_difference(res, 40, 150000000, True)
+#res = res_to_data(res, list_wants)
 
 
-#optimal_time_frame(1, 20, 150000000, 10)
-
-#err = new_sim.run_sim_cycle_strat( int(sys.argv[1]), 12, True )
-
-#new_sim = Cow_simulator(int(sys.argv[2]))
-#new_sim.set_financials(True)
-
-#err = new_sim.run_sim( int(sys.argv[1]), False )
-
-#financials = new_sim.get_financials()
-
-list_wants = ['margin', 'total IRR', 'value']
-
-print(res)
-print(res_to_data(res, list_wants))
 #print( dict_to_csv_parser(res) )
-
-#print(err) 

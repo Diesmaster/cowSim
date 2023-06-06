@@ -2,10 +2,10 @@ import math
 import random
 import sys
 import config
+from financial_models import Financial_model
 
-#todo
-# var analysis
-# financial stats
+# todo
+# personal financial aspects 
 # more indepth pricing models
 
 class Cow_simulator:
@@ -35,6 +35,7 @@ class Cow_simulator:
         self.amount_max_capacity = config.amount_max_capacity
         self.amount_change_to_cycle_strat = config.amount_change_to_cycle_strat
         self.bool_financials = config.bool_financials
+        self.fin_mod = None
 
         #objt vars
         self.n_month = 0
@@ -51,7 +52,6 @@ class Cow_simulator:
         self.amount_cows_bought_last = 0;
         self.end_balance = 0
         self.financials_per_cycle = []
-
 
 
     def __str__(self):
@@ -178,6 +178,9 @@ class Cow_simulator:
         if verbose == True:
             print("begin of the month: " + str(self))
 
+        if not self.fin_mod == None:
+            self.fin_mod.gather_data_begin(self)
+
         #buy the cows again beginning of month
         if( (self.n_month - self.cycle_start) % self.cycle_length) == 0:
             self.amount_start_balance = self.amount_balance
@@ -200,6 +203,9 @@ class Cow_simulator:
         if self.amount_balance < 0:
             return {'error':'company becomes insolvent somewhere in this cycle'}
 
+        if not self.fin_mod == None:
+            self.fin_mod.gather_data_mid(self)
+
         #calculate total profit end of month
         if( (self.n_month - self.cycle_start) % self.cycle_length) == 2:
             self.end_balance = self.amount_balance
@@ -207,6 +213,9 @@ class Cow_simulator:
 
         if verbose == True:
             print("end-- of the month: " + str(self))
+
+        if not self.fin_mod == None:
+          self.fin_mod.gather_data_end(self)
 
         return self.get_sim_return_obj()
 
@@ -346,7 +355,7 @@ class Cow_simulator:
         return (((margin/100)+1)**(12/self.cycle_length))*100
 
     def get_financials_per_cycle(self):
-        if self.n_month % self.cycle_length == 2:
+        if self.n_month % self.cycle_length == self.cycle_length-1:
             financials = self.get_end_financials()
             self.financials_per_cycle.append(financials)
             return financials
@@ -457,6 +466,9 @@ class Cow_simulator:
     def set_config_value(self, var_name, new_value):
         setattr(self, var_name, new_value)
         return getattr(self, var_name)
+
+    def import_fin_module(self, fin_mod):
+        self.fin_mod = fin_mod
 
 
 
