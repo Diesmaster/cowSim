@@ -9,7 +9,7 @@ from price import Price_model
 # personal financial aspects
 
 class Cow_simulator:
-    def __init__(self, invested):
+    def __init__(self, amount_invested=config.money_invested):
         self.price_per_kg_normal = Price_model(config.price_per_kg_normal, exceptions={'6':config.price_per_kg_eid_increase}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.my_share_low = config.my_share_low
         self.percentage_of_dry_matter = config.percentage_of_dry_matter
@@ -23,7 +23,7 @@ class Cow_simulator:
         self.cost_of_farmhand = config.cost_of_farmhand
         self.cattle_bought_at_kg = config.cattle_bought_at_kg
         self.cost_of_security_guard = config.cost_of_security_guard
-        self.money_invested = config.money_invested
+        self.money_invested = amount_invested
         self.cycle_length = config.cycle_length
         self.fermented_poop_price = config.fermented_poop_price
         self.percentage_poop_dry = config.percentage_poop_dry
@@ -35,6 +35,7 @@ class Cow_simulator:
         self.amount_max_capacity = config.amount_max_capacity
         self.amount_change_to_cycle_strat = config.amount_change_to_cycle_strat
         self.bool_financials = config.bool_financials
+        self.percentage_own = config.percentage_own
         self.fin_mod = None
 
         #objt vars
@@ -45,7 +46,7 @@ class Cow_simulator:
         
         self.cycle_start = 0
         self.amount_cows = 0
-        self.amount_balance = invested
+        self.amount_balance = amount_invested
 
         #finance vars
         self.amount_start_balance = 0;
@@ -62,7 +63,8 @@ class Cow_simulator:
         if not (self.n_month == other.n_month):
             return {'error': 'cannot add 2 sims that are in different months'}
 
-        new_sim = Cow_simulator(self.amount_balance + other.amount_balance)
+        new_sim = Cow_simulator()
+        new_sim.amount_balance = self.amount_balance + other.amount_balance
         new_sim.amount_cow_weight = self.amount_cow_weight + other.amount_cow_weight
         new_sim.amount_cows =  self.amount_cows + other.amount_cows
         new_sim.n_month = self.n_month
@@ -115,7 +117,7 @@ class Cow_simulator:
         if month == 5:
             return self.price_per_kg_normal * ((self.price_per_kg_eid_increase/100)+1)
         else:
-            return self.price_per_kg_normal
+            return self.price_per_kg_normal.get_price()
 
     def get_price_of_concentraat(self, n_cows):
         if self.amount_cows > 100:
@@ -381,7 +383,7 @@ class Cow_simulator:
 
         valuations = ''
         if not type(self.fin_mod) == type(None):
-            valuations = self.fin_mod.get_value_models_final(self)
+            valuations = self.fin_mod.get_value_models_final()
         
         
         return {"total IRR":perc_IRR, "cost_per_cycle":cost, "cost_per_cow":cost_per_cow, "profit_per_cycle":profit, "profit_per_cow":profit_per_cow, "margin":margin, "annualized_IRR":annualized_IRR, 'valuations':valuations}

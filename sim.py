@@ -281,16 +281,17 @@ if not sys.argv[1]:
 if not sys.argv[2]:
    print("amount of cycles should be the first argument, and missing a amount invested as second argument as array")
 
-new_sim = Cow_simulator(150000000)
+new_sim = Cow_simulator()
 fin_mod = Financial_model()
 #new_price = Price_model(config.price_per_kg_normal, exceptions={'6':60000}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
 #print(new_price)
 
 
 
-#new_sim.import_fin_module(fin_mod)
+new_sim.import_fin_module(fin_mod)
 res = new_sim.run_sim(int(sys.argv[1]), False)
 #res = new_sim.get_end_financials()
+res = fin_mod.get_personal_financials() 
 print(res)
 
 #filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg', 'bool_financials']

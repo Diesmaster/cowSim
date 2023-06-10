@@ -1,4 +1,5 @@
 import math
+import config
 
 class Financial_model:
 	def __init__(self):
@@ -9,6 +10,10 @@ class Financial_model:
 		self.arr_CFO = []
 		self.last_CFO = 0;
 		self.arr_EARNINGS = []
+		self.money_invested = config.money_invested
+
+		#personal finance consts:
+		self.percentage_own = config.percentage_own
 
 	#util
 	def __str__(self):
@@ -21,7 +26,6 @@ class Financial_model:
 
 	def sum_array_until(self, arr, index):
 		sum_arr = 0
-
 		if len(arr) < index:
 			index = len(arr)
 
@@ -42,7 +46,7 @@ class Financial_model:
 		self.arr_CFO.append(self.get_this_month_CFO(sim))
 
 	#Discounted Cash Flow Analysis
-	def discounted_cashflow_analysis(self, sim, discount):
+	def discounted_cashflow_analysis(self, discount):
 		one_year_discount_amount = (100-discount)/100
 		
 		model_FCF = self.calculate_DCA_from_array(self.arr_FCF, one_year_discount_amount)
@@ -102,7 +106,7 @@ class Financial_model:
 		else:
 			return 0
 
-	def earnings_multiple_analysis(self, sim, multiple):
+	def earnings_multiple_analysis(self, multiple):
 		ret = []
 		last_earning = 0
 		for index, value in enumerate(self.arr_EARNINGS):
@@ -127,20 +131,42 @@ class Financial_model:
 	def get_NAV(self):
 		return {'NAV':self.arr_NAV}
 
-	def get_value_models(self, sim, multiple=1.2, one_year_discount_amount=6.5):
+	def get_value_models(self, multiple=1.2, one_year_discount_amount=6.5):
 		NAV = self.get_NAV()
-		EMA = self.earnings_multiple_analysis(sim, multiple)
-		DCF = self.discounted_cashflow_analysis(sim, one_year_discount_amount)
+		EMA = self.earnings_multiple_analysis( multiple)
+		DCF = self.discounted_cashflow_analysis( one_year_discount_amount)
 		return {**NAV, **EMA, **DCF}
 
-	def get_value_models_final(self, sim, multiple=1.2, one_year_discount_amount=6.5):
+	def get_value_models_final(self, multiple=1.2, one_year_discount_amount=6.5):
 		NAV = self.get_NAV()
 		NAV['NAV'] = NAV['NAV'][len(NAV['NAV'])-1]
-		EMA = self.earnings_multiple_analysis(sim, multiple)
+		EMA = self.earnings_multiple_analysis(multiple)
 		EMA['EMA'] = EMA['EMA'][len(EMA['EMA'])-1]
-		DCF = self.discounted_cashflow_analysis(sim, one_year_discount_amount)
+		DCF = self.discounted_cashflow_analysis(one_year_discount_amount)
 		DCF['FCF'] = DCF['FCF'][len(DCF['FCF'])-1]
 		DCF['CFO'] = DCF['CFO'][len(DCF['CFO'])-1] 
 		return {**NAV, **EMA, **DCF}
 
+	def get_personal_financials(self, multiple=1.2, one_year_discount_amount=6.5):
+		NAV1 = self.get_NAV()
+		NAV = {}
+		NAV['Valuation'] = NAV1['NAV'][len(NAV1['NAV'])-1]*(self.percentage_own/100)
+		NAV['IRR'] = ((NAV1['NAV'][len(NAV1['NAV'])-1]*(self.percentage_own/100)/self.money_invested)-1)*100
+		NAV['IRR_AVR_Y'] = ((NAV['IRR']/100 + 1)**(1/(len(NAV1['NAV'])/12))-1)*100
+		EMA1 = self.earnings_multiple_analysis( multiple)
+		EMA = {}
+		EMA['Valuation'] = EMA1['EMA'][len(EMA1['EMA'])-1]*(self.percentage_own/100)
+		EMA['IRR'] = ((EMA1['EMA'][len(EMA1['EMA'])-1]*(self.percentage_own/100)/self.money_invested)-1)*100
+		EMA['IRR_AVR_Y'] = ((EMA['IRR']/100 + 1)**(1/(len(EMA1['EMA'])/12))-1)*100
+		DCF1 = self.discounted_cashflow_analysis(one_year_discount_amount)
+		DCF = {}
+		DCF['Valuation'] = DCF1['FCF'][len(DCF1['FCF'])-1]*(self.percentage_own/100)
+		DCF['IRR'] = ((DCF1['FCF'][len(DCF1['FCF'])-1]*(self.percentage_own/100)/self.money_invested)-1)*100
+		DCF['IRR_AVR_Y'] = ((DCF['IRR']/100 + 1)**(1/(len(DCF1['FCF'])/12))-1)*100
+		DFO = {} 
+		DFO['Valuation'] = DCF1['CFO'][len(DCF1['CFO'])-1]*(self.percentage_own/100)
+		DFO['IRR'] = ((DCF1['CFO'][len(DCF1['CFO'])-1]*(self.percentage_own/100)/self.money_invested)-1)*100
+		DFO['IRR_AVR_Y'] = ((DFO['IRR']/100 + 1)**(1/(len(DCF1['CFO'])/12))-1)*100
+
+		return {'personal':{'NAV':NAV, 'EMA':EMA, 'DCF':DCF, 'DFO':DFO}}
 

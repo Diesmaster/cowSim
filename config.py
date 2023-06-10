@@ -24,3 +24,4 @@ percentage_of_grass_dry = 20
 amount_max_capacity = 1000
 amount_change_to_cycle_strat = 1001
 bool_financials = True
+percentage_own = 60
