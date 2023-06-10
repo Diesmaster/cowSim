@@ -375,8 +375,13 @@ class Cow_simulator:
         margin = self.calculate_margin(profit_per_cow, cost_per_cow)
 
         annualized_IRR = self.calculate_annualized_IRR(margin)
+
+        valuations = ''
+        if not type(self.fin_mod) == type(None):
+            valuations = self.fin_mod.get_value_models_final(self)
         
-        return {"total IRR":perc_IRR, "cost_per_cycle":cost, "cost_per_cow":cost_per_cow, "profit_per_cycle":profit, "profit_per_cow":profit_per_cow, "margin":margin, "annualized_IRR":annualized_IRR}
+        
+        return {"total IRR":perc_IRR, "cost_per_cycle":cost, "cost_per_cow":cost_per_cow, "profit_per_cycle":profit, "profit_per_cow":profit_per_cow, "margin":margin, "annualized_IRR":annualized_IRR, 'valuations':valuations}
 
     def get_sim_return_obj(self):
         if self.bool_financials == False:
@@ -413,6 +418,7 @@ class Cow_simulator:
       amount_cycles_max = 0
       total_return = 0
       res = {}
+      ret = {}
 
       for x in range(0, int(amount_cycles*self.cycle_length)):
         if x % self.cycle_devider >= len(sims):
@@ -425,13 +431,15 @@ class Cow_simulator:
 
         new_sim = self.add_list_to_parent(sims)
 
-        if verbose == True:  
+        if verbose == True:
+          ret.append(new_sim)
           print(self.print_individually(sims))
 
       
       new_sim.sell_cows(new_sim.amount_cows) 
       #print(new_sim)
-
+      if verbose == True:
+        return ret
       return new_sim.get_sim_return_obj()
 
 
@@ -441,6 +449,7 @@ class Cow_simulator:
       amount_cycles_max = 0
       total_return = 0
       res = {}
+      ret = []
 
       for x in range(0, int(amount_cycles*self.cycle_length)):
         if self.amount_cows == 0:
@@ -448,9 +457,14 @@ class Cow_simulator:
           if self.calculate_amount_of_cow_sim(0, test) > self.amount_change_to_cycle_strat:
 
              res = self.run_sim_cycle_strat( int(amount_cycles-(x/self.cycle_length)), 12)
+             if verbose == True: 
+               ret.append(res)
              return res
 
         res = self.pass_month()
+        if verbose == True: 
+            ret.append(res)
+
         self.push_month()
 
         #if self.bool_financials == True:
@@ -460,7 +474,9 @@ class Cow_simulator:
         if verbose == True:  
           print(self)
 
-      self.sell_cows(self.amount_cows) 
+      self.sell_cows(self.amount_cows)
+      if verbose == True:
+        return ret 
       return res
 
     def set_config_value(self, var_name, new_value):

@@ -49,7 +49,7 @@ class Financial_model:
 
 		model_CFO = self.calculate_DCA_from_array(self.arr_CFO, one_year_discount_amount)
 
-		return {"model_FCF":model_FCF, "model_CFO":model_CFO}
+		return {"FCF":model_FCF, "CFO":model_CFO}
 
 	def calculate_DCA_from_array(self, arr, one_year_discount_amount):
 		ret = []
@@ -131,6 +131,16 @@ class Financial_model:
 		NAV = self.get_NAV()
 		EMA = self.earnings_multiple_analysis(sim, multiple)
 		DCF = self.discounted_cashflow_analysis(sim, one_year_discount_amount)
+		return {**NAV, **EMA, **DCF}
+
+	def get_value_models_final(self, sim, multiple=1.2, one_year_discount_amount=6.5):
+		NAV = self.get_NAV()
+		NAV['NAV'] = NAV['NAV'][len(NAV['NAV'])-1]
+		EMA = self.earnings_multiple_analysis(sim, multiple)
+		EMA['EMA'] = EMA['EMA'][len(EMA['EMA'])-1]
+		DCF = self.discounted_cashflow_analysis(sim, one_year_discount_amount)
+		DCF['FCF'] = DCF['FCF'][len(DCF['FCF'])-1]
+		DCF['CFO'] = DCF['CFO'][len(DCF['CFO'])-1] 
 		return {**NAV, **EMA, **DCF}
 
 

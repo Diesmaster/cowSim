@@ -47,6 +47,12 @@ def flatten_dict(data, new_key=''):
 
   return flattened_data
 
+def extract_keys(array):
+    keys = set()
+    for dictionary in array:
+        keys.update(dictionary.keys())
+    return list(keys)
+
 def dict_to_csv_parser(data):
     data = flatten_dict(data)
 
@@ -64,17 +70,30 @@ def dict_to_csv_parser(data):
           else:
             big_array[index] = small_array
 
+        keys = extract_keys(big_array)
+
+        writer = csv.DictWriter(csv_string, fieldnames=keys if big_array else [])
+
+        #writer = csv.DictWriter(csv_string, fieldnames=big_array[0].keys() if big_array else [])
+        writer.writeheader()
+        writer.writerows(big_array)
+        return csv_string.getvalue()  
       
-      
+      elif len(data) == 1:
+        writer = csv.DictWriter(csv_string, fieldnames=one_array.keys() if one_array else [])
+        writer.writeheader()
+        writer.writerows(data)
+        return csv_string.getvalue()
+
       else:
-        writer = csv.DictWriter(csv_string, fieldnames=one_array[0].keys() if one_array else [])
+        writer = csv.DictWriter(csv_string, fieldnames=one_array.keys() if one_array else [])
         writer.writeheader()
         writer.writerows(one_array)
         return csv_string.getvalue()
 
-    writer = csv.DictWriter(csv_string, fieldnames=big_array[0].keys() if big_array else [])
+    writer = csv.DictWriter(csv_string, fieldnames=data[0].keys() if data else [])
     writer.writeheader()
-    writer.writerows(big_array)
+    writer.writerows(data)
     return csv_string.getvalue()
 
 def res_to_data(res, list_wants):
@@ -265,9 +284,9 @@ new_sim = Cow_simulator(150000000)
 fin_mod = Financial_model()
 
 new_sim.import_fin_module(fin_mod)
-res = new_sim.run_sim(40, 150000000)
-res = fin_mod.get_value_models(new_sim)
-print(res['EMA'])
+res = new_sim.run_sim(40, True)
+#res = new_sim.get_end_financials()
+print(res)
 
 #filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg', 'bool_financials']
 
@@ -278,4 +297,4 @@ print(res['EMA'])
 #res = res_to_data(res, list_wants)
 
 
-#print( dict_to_csv_parser(res) )
+print( dict_to_csv_parser([res]) )

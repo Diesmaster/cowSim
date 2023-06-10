@@ -1,0 +1,243 @@
+Month: 1, Total Cow Weight: 2800, Amount of Cows: 10, Balance: 20190000.0
+Month: 2, Total Cow Weight: 3100, Amount of Cows: 10, Balance: 15132500.0
+Month: 3, Total Cow Weight: 0, Amount of Cows: 0, Balance: 190027500.0
+Month: 4, Total Cow Weight: 3640, Amount of Cows: 13, Balance: 22024500.0
+Month: 5, Total Cow Weight: 4030, Amount of Cows: 13, Balance: 16199750.0
+Month: 6, Total Cow Weight: 0, Amount of Cows: 0, Balance: 274767050.0
+Month: 7, Total Cow Weight: 5600, Amount of Cows: 20, Balance: 17647050.0
+Month: 8, Total Cow Weight: 6200, Amount of Cows: 20, Balance: 10032050.0
+Month: 9, Total Cow Weight: 0, Amount of Cows: 0, Balance: 362322050.0
+Month: 10, Total Cow Weight: 7000, Amount of Cows: 25, Balance: 39047050.0
+Month: 11, Total Cow Weight: 7750, Amount of Cows: 25, Balance: 27653300.0
+Month: 12, Total Cow Weight: 0, Amount of Cows: 0, Balance: 466140800.0
+Month: 13, Total Cow Weight: 9240, Amount of Cows: 33, Balance: 38517800.0
+Month: 14, Total Cow Weight: 10230, Amount of Cows: 33, Balance: 22578050.0
+Month: 15, Total Cow Weight: 0, Amount of Cows: 0, Balance: 600481550.0
+Month: 16, Total Cow Weight: 12040, Amount of Cows: 43, Balance: 45548550.0
+Month: 17, Total Cow Weight: 13330, Amount of Cows: 43, Balance: 27051300.0
+Month: 18, Total Cow Weight: 0, Amount of Cows: 0, Balance: 883081599.9999999
+Month: 19, Total Cow Weight: 17920, Amount of Cows: 64, Balance: 58297599.99999988
+Month: 20, Total Cow Weight: 19840, Amount of Cows: 64, Balance: 31929599.999999873
+Month: 21, Total Cow Weight: 0, Amount of Cows: 0, Balance: 1157257599.9999998
+Month: 22, Total Cow Weight: 23520, Amount of Cows: 84, Balance: 75353599.99999976
+Month: 23, Total Cow Weight: 26040, Amount of Cows: 84, Balance: 41370599.99999976
+Month: 24, Total Cow Weight: 0, Amount of Cows: 0, Balance: 1518988599.9999998
+Month: 25, Total Cow Weight: 31360, Amount of Cows: 112, Balance: 84325879.99999976
+Month: 26, Total Cow Weight: 34720, Amount of Cows: 112, Balance: 47556439.99999976
+Month: 27, Total Cow Weight: 0, Amount of Cows: 0, Balance: 2026920279.9999998
+Month: 28, Total Cow Weight: 42000, Amount of Cows: 150, Balance: 108086279.99999976
+Month: 29, Total Cow Weight: 46500, Amount of Cows: 150, Balance: 61430779.99999976
+Month: 30, Total Cow Weight: 0, Amount of Cows: 0, Balance: 3066343779.999999
+Month: 31, Total Cow Weight: 63840, Amount of Cows: 228, Balance: 148816099.99999905
+Month: 32, Total Cow Weight: 70680, Amount of Cows: 228, Balance: 76999739.99999905
+Month: 33, Total Cow Weight: 0, Amount of Cows: 0, Balance: 4109454699.999999
+Month: 34, Total Cow Weight: 85680, Amount of Cows: 306, Balance: 195733339.99999908
+Month: 35, Total Cow Weight: 94860, Amount of Cows: 306, Balance: 101256119.99999908
+Month: 36, Total Cow Weight: 0, Amount of Cows: 0, Balance: 5515143039.999999
+Month: 37, Total Cow Weight: 115080, Amount of Cows: 411, Balance: 260487879.99999905
+Month: 38, Total Cow Weight: 127410, Amount of Cows: 411, Balance: 135601809.99999905
+Month: 39, Total Cow Weight: 0, Amount of Cows: 0, Balance: 7409204829.999999
+Month: 40, Total Cow Weight: 154560, Amount of Cows: 552, Balance: 352295709.9999991
+Month: 41, Total Cow Weight: 171120, Amount of Cows: 552, Balance: 185003469.9999991
+Month: 42, Total Cow Weight: 0, Amount of Cows: 0, Balance: 11247483309.999998
+Month: 43, Total Cow Weight: 234920, Amount of Cows: 839, Balance: 525188469.9999981
+Month: 44, Total Cow Weight: 260090, Amount of Cows: 839, Balance: 274612039.9999981
+Month: 45, Total Cow Weight: 0, Amount of Cows: 0, Balance: 15127034019.999998
+Month: 46, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 2348974019.999998
+Month: 47, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 2052104019.999998
+Month: 48, Total Cow Weight: 0, Amount of Cows: 0, Balance: 19756424020.0
+Month: 49, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 6978364020.0
+Month: 50, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 6681494020.0
+Month: 51, Total Cow Weight: 0, Amount of Cows: 0, Balance: 24385814020.0
+Month: 52, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 11607754020.0
+Month: 53, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 11310884020.0
+Month: 54, Total Cow Weight: 0, Amount of Cows: 0, Balance: 31357804019.999996
+Month: 55, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 18579744019.999996
+Month: 56, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 18282874019.999996
+Month: 57, Total Cow Weight: 0, Amount of Cows: 0, Balance: 35987194020.0
+Month: 58, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 23209134020.0
+Month: 59, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 22912264020.0
+Month: 60, Total Cow Weight: 0, Amount of Cows: 0, Balance: 40616584020.0
+Month: 61, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 27838524020.0
+Month: 62, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 27541654020.0
+Month: 63, Total Cow Weight: 0, Amount of Cows: 0, Balance: 45245974020.0
+Month: 64, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 32467914020.0
+Month: 65, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 32171044020.0
+Month: 66, Total Cow Weight: 0, Amount of Cows: 0, Balance: 52217964020.0
+Month: 67, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 39439904020.0
+Month: 68, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 39143034020.0
+Month: 69, Total Cow Weight: 0, Amount of Cows: 0, Balance: 56847354020.0
+Month: 70, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 44069294020.0
+Month: 71, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 43772424020.0
+Month: 72, Total Cow Weight: 0, Amount of Cows: 0, Balance: 61476744020.0
+Month: 73, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 48698684020.0
+Month: 74, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 48401814020.0
+Month: 75, Total Cow Weight: 0, Amount of Cows: 0, Balance: 66106134020.0
+Month: 76, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 53328074020.0
+Month: 77, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 53031204020.0
+Month: 78, Total Cow Weight: 0, Amount of Cows: 0, Balance: 73078124020.0
+Month: 79, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 60300064020.0
+Month: 80, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 60003194020.0
+Month: 81, Total Cow Weight: 0, Amount of Cows: 0, Balance: 77707514020.0
+Month: 82, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 64929454020.0
+Month: 83, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 64632584020.0
+Month: 84, Total Cow Weight: 0, Amount of Cows: 0, Balance: 82336904020.0
+Month: 85, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 69558844020.0
+Month: 86, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 69261974020.0
+Month: 87, Total Cow Weight: 0, Amount of Cows: 0, Balance: 86966294020.0
+Month: 88, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 74188234020.0
+Month: 89, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 73891364020.0
+Month: 90, Total Cow Weight: 0, Amount of Cows: 0, Balance: 93938284020.0
+Month: 91, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 81160224020.0
+Month: 92, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 80863354020.0
+Month: 93, Total Cow Weight: 0, Amount of Cows: 0, Balance: 98567674020.0
+Month: 94, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 85789614020.0
+Month: 95, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 85492744020.0
+Month: 96, Total Cow Weight: 0, Amount of Cows: 0, Balance: 103197064020.0
+Month: 97, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 90419004020.0
+Month: 98, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 90122134020.0
+Month: 99, Total Cow Weight: 0, Amount of Cows: 0, Balance: 107826454020.0
+Month: 100, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 95048394020.0
+Month: 101, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 94751524020.0
+Month: 102, Total Cow Weight: 0, Amount of Cows: 0, Balance: 114798444020.0
+Month: 103, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 102020384020.0
+Month: 104, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 101723514020.0
+Month: 105, Total Cow Weight: 0, Amount of Cows: 0, Balance: 119427834020.0
+Month: 106, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 106649774020.0
+Month: 107, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 106352904020.0
+Month: 108, Total Cow Weight: 0, Amount of Cows: 0, Balance: 124057224020.0
+Month: 109, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 111279164020.0
+Month: 110, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 110982294020.0
+Month: 111, Total Cow Weight: 0, Amount of Cows: 0, Balance: 128686614020.0
+Month: 112, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 115908554020.0
+Month: 113, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 115611684020.0
+Month: 114, Total Cow Weight: 0, Amount of Cows: 0, Balance: 135658604020.0
+Month: 115, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 122880544020.0
+Month: 116, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 122583674020.0
+Month: 117, Total Cow Weight: 0, Amount of Cows: 0, Balance: 140287994020.0
+Month: 118, Total Cow Weight: 280000, Amount of Cows: 1000, Balance: 127509934020.0
+Month: 119, Total Cow Weight: 310000, Amount of Cows: 1000, Balance: 127213064020.0
+Month: 120, Total Cow Weight: 0, Amount of Cows: 0, Balance: 144917384020.0
+[{'error': '', 'financials': '', 'cows': 10, 'balance': 20190000.0}, {'error': '', 'financials': '', 'cows': 10, 'balance': 15132500.0}, {'error': '', 'financials': {'total IRR': 126.685, 'cost_per_cycle': 140172500.0, 'cost_per_cow': 14017250.0, 'profit_per_cycle': 40027500.0, 'profit_per_cow': 4002750.0, 'margin': 28.555886496994777, 'annualized_IRR': 273.1290348588862, 'valuations': {'NAV': 190027500.0, 'EMA': 96066000.0, 'FCF': 9086359.839992184, 'CFO': 150000000.0}}, 'cows': 0, 'balance': 190027500.0}, {'error': '', 'financials': '', 'cows': 13, 'balance': 22024500.0}, {'error': '', 'financials': '', 'cows': 13, 'balance': 16199750.0}, {'error': '', 'financials': {'total IRR': 183.17803333333333, 'cost_per_cycle': 179974250.0, 'cost_per_cow': 13844173.076923076, 'profit_per_cycle': 84739550.0, 'profit_per_cow': 6518426.923076923, 'margin': 47.08426344324258, 'annualized_IRR': 468.02046099983585, 'valuations': {'NAV': 274767050.0, 'EMA': 251407920.0, 'FCF': 9827500.0, 'CFO': 324895000.0}}, 'cows': 0, 'balance': 274767050.0}, {'error': '', 'financials': '', 'cows': 20, 'balance': 17647050.0}, {'error': '', 'financials': '', 'cows': 20, 'balance': 10032050.0}, {'error': '', 'financials': {'total IRR': 241.54803333333334, 'cost_per_cycle': 272845000.0, 'cost_per_cow': 13642250.0, 'profit_per_cycle': 87555000.0, 'profit_per_cow': 4377750.0, 'margin': 32.08964796862688, 'annualized_IRR': 304.42136641176234, 'valuations': {'NAV': 362322050.0, 'EMA': 359852460.0, 'FCF': 0.0, 'CFO': 583462300.0}}, 'cows': 0, 'balance': 362322050.0}, {'error': '', 'financials': '', 'cows': 25, 'balance': 39047050.0}, {'error': '', 'financials': '', 'cows': 25, 'balance': 27653300.0}, {'error': '', 'financials': {'total IRR': 310.76053333333334, 'cost_per_cycle': 346681250.0, 'cost_per_cow': 13867250.0, 'profit_per_cycle': 103818750.0, 'profit_per_cow': 4152750.0, 'margin': 29.946456579350627, 'annualized_IRR': 285.1397510429662, 'valuations': {'NAV': 466140800.0, 'EMA': 379368960.0, 'FCF': 13750375.24737482, 'CFO': 935752300.0}}, 'cows': 0, 'balance': 466140800.0}, {'error': '', 'financials': '', 'cows': 33, 'balance': 38517800.0}, {'error': '', 'financials': '', 'cows': 33, 'balance': 22578050.0}, {'error': '', 'financials': {'total IRR': 400.32103333333333, 'cost_per_cycle': 460319250.0, 'cost_per_cow': 13949068.181818182, 'profit_per_cycle': 134340750.0, 'profit_per_cow': 4070931.8181818184, 'margin': 29.18425636121018, 'annualized_IRR': 278.5084384564928, 'valuations': {'NAV': 600481550.0, 'EMA': 492544860.0, 'FCF': 0.0, 'CFO': 1374239800.0}}, 'cows': 0, 'balance': 600481550.0}, {'error': '', 'financials': '', 'cows': 43, 'balance': 45548550.0}, {'error': '', 'financials': '', 'cows': 43, 'balance': 27051300.0}, {'error': '', 'financials': {'total IRR': 588.7210666666665, 'cost_per_cycle': 592991750.0, 'cost_per_cow': 13790505.813953489, 'profit_per_cycle': 282600049.9999999, 'profit_per_cow': 6572094.186046509, 'margin': 47.65665795519076, 'annualized_IRR': 475.3485108317559, 'valuations': {'NAV': 883081599.9999999, 'EMA': 729977459.9999999, 'FCF': 6366952.558230561, 'CFO': 1952143300.0}}, 'cows': 0, 'balance': 883081599.9999999}, {'error': '', 'financials': '', 'cows': 64, 'balance': 58297599.99999988}, {'error': '', 'financials': '', 'cows': 64, 'balance': 31929599.999999873}, {'error': '', 'financials': {'total IRR': 771.5050666666665, 'cost_per_cycle': 879104000.0, 'cost_per_cow': 13736000.0, 'profit_per_cycle': 274175999.9999999, 'profit_per_cow': 4283999.999999998, 'margin': 31.18811881188118, 'annualized_IRR': 296.1952011529341, 'valuations': {'NAV': 1157257599.9999998, 'EMA': 953922659.9999996, 'FCF': 0.0, 'CFO': 2808173600.0}}, 'cows': 0, 'balance': 1157257599.9999998}, {'error': '', 'financials': '', 'cows': 84, 'balance': 75353599.99999976}, {'error': '', 'financials': '', 'cows': 84, 'balance': 41370599.99999976}, {'error': '', 'financials': {'total IRR': 1012.6590666666665, 'cost_per_cycle': 1151949000.0, 'cost_per_cow': 13713678.57142857, 'profit_per_cycle': 361731000.0, 'profit_per_cow': 4306321.428571428, 'margin': 31.4016505939065, 'annualized_IRR': 298.1283541246899, 'valuations': {'NAV': 1518988599.9999998, 'EMA': 1263417359.9999998, 'FCF': 4363622.788203097, 'CFO': 3933501600.0}}, 'cows': 0, 'balance': 1518988599.9999998}, {'error': '', 'financials': '', 'cows': 112, 'balance': 84325879.99999976}, {'error': '', 'financials': '', 'cows': 112, 'balance': 47556439.99999976}, {'error': '', 'financials': {'total IRR': 1351.2801866666666, 'cost_per_cycle': 1510308320.0, 'cost_per_cow': 13484895.714285715, 'profit_per_cycle': 507931680.0, 'profit_per_cow': 4535104.285714285, 'margin': 33.63099264393908, 'annualized_IRR': 318.88109881104907, 'valuations': {'NAV': 2026920279.9999998, 'EMA': 1711726475.9999998, 'FCF': 8033913.395714747, 'CFO': 5411119600.0}}, 'cows': 0, 'balance': 2026920279.9999998}, {'error': '', 'financials': '', 'cows': 150, 'balance': 108086279.99999976}, {'error': '', 'financials': '', 'cows': 150, 'balance': 61430779.99999976}, {'error': '', 'financials': {'total IRR': 2044.229186666666, 'cost_per_cycle': 2014966500.0, 'cost_per_cow': 13433110.0, 'profit_per_cycle': 1039423499.9999993, 'profit_per_cow': 6929489.999999995, 'margin': 51.58515042309632, 'annualized_IRR': 527.9911415833434, 'valuations': {'NAV': 3066343779.999999, 'EMA': 2619914615.9999986, 'FCF': 11282148.534728166, 'CFO': 7390483440.0}}, 'cows': 0, 'balance': 3066343779.999999}, {'error': '', 'financials': '', 'cows': 228, 'balance': 148816099.99999905}, {'error': '', 'financials': '', 'cows': 228, 'balance': 76999739.99999905}, {'error': '', 'financials': {'total IRR': 2739.636466666666, 'cost_per_cycle': 3065449080.0, 'cost_per_cow': 13444952.105263159, 'profit_per_cycle': 1043110920.0, 'profit_per_cow': 4575047.894736842, 'margin': 34.027996968065764, 'annualized_IRR': 322.6874749258995, 'valuations': {'NAV': 4109454699.999999, 'EMA': 3542636519.9999986, 'FCF': 0.0, 'CFO': 10395396440.0}}, 'cows': 0, 'balance': 4109454699.999999}, {'error': '', 'financials': '', 'cows': 306, 'balance': 195733339.99999908}, {'error': '', 'financials': '', 'cows': 306, 'balance': 101256119.99999908}, {'error': '', 'financials': {'total IRR': 3676.7620266666663, 'cost_per_cycle': 4108431660.0, 'cost_per_cow': 13426247.25490196, 'profit_per_cycle': 1405688340.0, 'profit_per_cow': 4593752.7450980395, 'margin': 34.214718810729835, 'annualized_IRR': 324.4894515443197, 'valuations': {'NAV': 5515143039.999999, 'EMA': 4795385327.999999, 'FCF': 786269.4899820857, 'CFO': 14427851400.0}}, 'cows': 0, 'balance': 5515143039.999999}, {'error': '', 'financials': '', 'cows': 411, 'balance': 260487879.99999905}, {'error': '', 'financials': '', 'cows': 411, 'balance': 135601809.99999905}, {'error': '', 'financials': {'total IRR': 4939.469886666666, 'cost_per_cycle': 5512158210.0, 'cost_per_cow': 13411577.15328467, 'profit_per_cycle': 1894061790.0, 'profit_per_cow': 4608422.846715328, 'margin': 34.361528059260834, 'annualized_IRR': 325.9115391510886, 'valuations': {'NAV': 7409204829.999999, 'EMA': 6458741459.999999, 'FCF': 2505674.9326593424, 'CFO': 19841738320.0}}, 'cows': 0, 'balance': 7409204829.999999}, {'error': '', 'financials': '', 'cows': 552, 'balance': 352295709.9999991}, {'error': '', 'financials': '', 'cows': 552, 'balance': 185003469.9999991}, {'error': '', 'financials': {'total IRR': 7498.322206666666, 'cost_per_cycle': 7401876720.0, 'cost_per_cow': 13409196.956521738, 'profit_per_cycle': 3838278479.999999, 'profit_per_cow': 6953403.043478259, 'margin': 51.85547699854152, 'annualized_IRR': 531.7675614596227, 'valuations': {'NAV': 11247483309.999998, 'EMA': 9817367435.999998, 'FCF': 6212598.974337477, 'CFO': 27115341340.0}}, 'cows': 0, 'balance': 11247483309.999998}, {'error': '', 'financials': '', 'cows': 839, 'balance': 525188469.9999981}, {'error': '', 'financials': '', 'cows': 839, 'balance': 274612039.9999981}, {'error': '', 'financials': {'total IRR': 10084.689346666666, 'cost_per_cycle': 11239229290.0, 'cost_per_cow': 13395982.467222884, 'profit_per_cycle': 3879550710.0, 'profit_per_cow': 4624017.532777116, 'margin': 34.517942555472146, 'annualized_IRR': 327.43180690794986, 'valuations': {'NAV': 15127034019.999998, 'EMA': 13221095184.0, 'FCF': 8004747.856454378, 'CFO': 38177821180.0}}, 'cows': 0, 'balance': 15127034019.999998}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 2348974019.999998}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 2052104019.999998}, {'error': '', 'financials': {'total IRR': 13170.949346666666, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.000002, 'profit_per_cow': 4629390.000000002, 'margin': 34.57191270599324, 'annualized_IRR': 327.9576009084863, 'valuations': {'NAV': 19756424020.0, 'EMA': 17089537176.000002, 'FCF': 1250126153.1627643, 'CFO': 53030243160.0}}, 'cows': 0, 'balance': 19756424020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 6978364020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 6681494020.0}, {'error': '', 'financials': {'total IRR': 16257.209346666667, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 24385814020.0, 'EMA': 20371931028.0, 'FCF': 6978364020.0, 'CFO': 70734563160.0}}, 'cows': 0, 'balance': 24385814020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 11607754020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 11310884020.0}, {'error': '', 'financials': {'total IRR': 20905.202679999995, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 6971989999.999996, 'profit_per_cow': 6971989.999999996, 'margin': 52.066261357772326, 'annualized_IRR': 534.7262134801983, 'valuations': {'NAV': 31357804019.999996, 'EMA': 24132384852.0, 'FCF': 11607754020.0, 'CFO': 88438883160.0}}, 'cows': 0, 'balance': 31357804019.999996}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 18579744019.999996}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 18282874019.999996}, {'error': '', 'financials': {'total IRR': 23991.46268, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.000004, 'profit_per_cow': 4629390.000000004, 'margin': 34.571912705993256, 'annualized_IRR': 327.9576009084865, 'valuations': {'NAV': 35987194020.0, 'EMA': 25032192000.0, 'FCF': 18579744019.999996, 'CFO': 108485803160.0}}, 'cows': 0, 'balance': 35987194020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 23209134020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 22912264020.0}, {'error': '', 'financials': {'total IRR': 27077.72268, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 40616584020.0, 'EMA': 25032192000.0, 'FCF': 23209134020.0, 'CFO': 126190123160.0}}, 'cows': 0, 'balance': 40616584020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 27838524020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 27541654020.0}, {'error': '', 'financials': {'total IRR': 30163.982679999997, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 45245974020.0, 'EMA': 25032192000.0, 'FCF': 27838524020.0, 'CFO': 143894443160.0}}, 'cows': 0, 'balance': 45245974020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 32467914020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 32171044020.0}, {'error': '', 'financials': {'total IRR': 34811.97601333333, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 6971990000.0, 'profit_per_cow': 6971990.0, 'margin': 52.06626135777235, 'annualized_IRR': 534.7262134801986, 'valuations': {'NAV': 52217964020.0, 'EMA': 25032192000.000004, 'FCF': 32467914020.0, 'CFO': 161598763160.0}}, 'cows': 0, 'balance': 52217964020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 39439904020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 39143034020.0}, {'error': '', 'financials': {'total IRR': 37898.236013333335, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 56847354020.0, 'EMA': 25032192000.0, 'FCF': 39439904020.0, 'CFO': 181645683160.0}}, 'cows': 0, 'balance': 56847354020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 44069294020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 43772424020.0}, {'error': '', 'financials': {'total IRR': 40984.49601333334, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 61476744020.0, 'EMA': 25032192000.0, 'FCF': 44069294020.0, 'CFO': 199350003160.0}}, 'cows': 0, 'balance': 61476744020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 48698684020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 48401814020.0}, {'error': '', 'financials': {'total IRR': 44070.75601333333, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 66106134020.0, 'EMA': 25032192000.0, 'FCF': 48698684020.0, 'CFO': 217054323160.0}}, 'cows': 0, 'balance': 66106134020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 53328074020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 53031204020.0}, {'error': '', 'financials': {'total IRR': 48718.74934666667, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 6971990000.0, 'profit_per_cow': 6971990.0, 'margin': 52.06626135777235, 'annualized_IRR': 534.7262134801986, 'valuations': {'NAV': 73078124020.0, 'EMA': 25032192000.0, 'FCF': 53328074020.0, 'CFO': 234758643160.0}}, 'cows': 0, 'balance': 73078124020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 60300064020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 60003194020.0}, {'error': '', 'financials': {'total IRR': 51805.009346666666, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 77707514020.0, 'EMA': 25032192000.0, 'FCF': 60300064020.0, 'CFO': 254805563160.0}}, 'cows': 0, 'balance': 77707514020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 64929454020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 64632584020.0}, {'error': '', 'financials': {'total IRR': 54891.26934666666, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 82336904020.0, 'EMA': 25032192000.0, 'FCF': 64929454020.0, 'CFO': 272509883160.0}}, 'cows': 0, 'balance': 82336904020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 69558844020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 69261974020.0}, {'error': '', 'financials': {'total IRR': 57977.52934666666, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 86966294020.0, 'EMA': 25032192000.0, 'FCF': 69558844020.0, 'CFO': 290214203160.0}}, 'cows': 0, 'balance': 86966294020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 74188234020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 73891364020.0}, {'error': '', 'financials': {'total IRR': 62625.522679999995, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 6971990000.0, 'profit_per_cow': 6971990.0, 'margin': 52.06626135777235, 'annualized_IRR': 534.7262134801986, 'valuations': {'NAV': 93938284020.0, 'EMA': 25032192000.0, 'FCF': 74188234020.0, 'CFO': 307918523160.0}}, 'cows': 0, 'balance': 93938284020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 81160224020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 80863354020.0}, {'error': '', 'financials': {'total IRR': 65711.78268, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 98567674020.0, 'EMA': 25032192000.0, 'FCF': 81160224020.0, 'CFO': 327965443160.0}}, 'cows': 0, 'balance': 98567674020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 85789614020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 85492744020.0}, {'error': '', 'financials': {'total IRR': 68798.04268, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 103197064020.0, 'EMA': 25032192000.0, 'FCF': 85789614020.0, 'CFO': 345669763160.0}}, 'cows': 0, 'balance': 103197064020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 90419004020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 90122134020.0}, {'error': '', 'financials': {'total IRR': 71884.30268, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 107826454020.0, 'EMA': 25032192000.0, 'FCF': 90419004020.0, 'CFO': 363374083160.0}}, 'cows': 0, 'balance': 107826454020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 95048394020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 94751524020.0}, {'error': '', 'financials': {'total IRR': 76532.29601333334, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 6971990000.0, 'profit_per_cow': 6971990.0, 'margin': 52.06626135777235, 'annualized_IRR': 534.7262134801986, 'valuations': {'NAV': 114798444020.0, 'EMA': 25032192000.0, 'FCF': 95048394020.0, 'CFO': 381078403160.0}}, 'cows': 0, 'balance': 114798444020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 102020384020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 101723514020.0}, {'error': '', 'financials': {'total IRR': 79618.55601333333, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 119427834020.0, 'EMA': 25032192000.0, 'FCF': 102020384020.0, 'CFO': 401125323160.0}}, 'cows': 0, 'balance': 119427834020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 106649774020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 106352904020.0}, {'error': '', 'financials': {'total IRR': 82704.81601333333, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 124057224020.0, 'EMA': 25032192000.0, 'FCF': 106649774020.0, 'CFO': 418829643160.0}}, 'cows': 0, 'balance': 124057224020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 111279164020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 110982294020.0}, {'error': '', 'financials': {'total IRR': 85791.07601333334, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 128686614020.0, 'EMA': 25032192000.0, 'FCF': 111279164020.0, 'CFO': 436533963160.0}}, 'cows': 0, 'balance': 128686614020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 115908554020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 115611684020.0}, {'error': '', 'financials': {'total IRR': 90439.06934666667, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 6971990000.0, 'profit_per_cow': 6971990.0, 'margin': 52.06626135777235, 'annualized_IRR': 534.7262134801986, 'valuations': {'NAV': 135658604020.0, 'EMA': 25032192000.0, 'FCF': 115908554020.0, 'CFO': 454238283160.0}}, 'cows': 0, 'balance': 135658604020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 122880544020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 122583674020.0}, {'error': '', 'financials': {'total IRR': 93525.32934666667, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 140287994020.0, 'EMA': 25032192000.0, 'FCF': 122880544020.0, 'CFO': 474285203160.0}}, 'cows': 0, 'balance': 140287994020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 127509934020.0}, {'error': '', 'financials': '', 'cows': 1000, 'balance': 127213064020.0}, {'error': '', 'financials': {'total IRR': 96611.58934666666, 'cost_per_cycle': 13390610000.0, 'cost_per_cow': 13390610.0, 'profit_per_cycle': 4629390000.0, 'profit_per_cow': 4629390.0, 'margin': 34.57191270599323, 'annualized_IRR': 327.9576009084861, 'valuations': {'NAV': 144917384020.0, 'EMA': 25032192000.0, 'FCF': 127509934020.0, 'CFO': 491989523160.0}}, 'cows': 0, 'balance': 144917384020.0}]
+financials_margin,financials_valuations_NAV,cows,financials_cost_per_cow,financials_valuations_FCF,financials_total IRR,financials_annualized_IRR,financials_cost_per_cycle,financials_valuations_EMA,financials_profit_per_cow,financials,balance,error,financials_valuations_CFO,financials_profit_per_cycle
+,,10,,,,,,,,,20190000.0,,,
+,,10,,,,,,,,,15132500.0,,,
+28.555886496994777,190027500.0,0,14017250.0,9086359.839992184,126.685,273.1290348588862,140172500.0,96066000.0,4002750.0,,190027500.0,,150000000.0,40027500.0
+,,13,,,,,,,,,22024500.0,,,
+,,13,,,,,,,,,16199750.0,,,
+47.08426344324258,274767050.0,0,13844173.076923076,9827500.0,183.17803333333333,468.02046099983585,179974250.0,251407920.0,6518426.923076923,,274767050.0,,324895000.0,84739550.0
+,,20,,,,,,,,,17647050.0,,,
+,,20,,,,,,,,,10032050.0,,,
+32.08964796862688,362322050.0,0,13642250.0,0.0,241.54803333333334,304.42136641176234,272845000.0,359852460.0,4377750.0,,362322050.0,,583462300.0,87555000.0
+,,25,,,,,,,,,39047050.0,,,
+,,25,,,,,,,,,27653300.0,,,
+29.946456579350627,466140800.0,0,13867250.0,13750375.24737482,310.76053333333334,285.1397510429662,346681250.0,379368960.0,4152750.0,,466140800.0,,935752300.0,103818750.0
+,,33,,,,,,,,,38517800.0,,,
+,,33,,,,,,,,,22578050.0,,,
+29.18425636121018,600481550.0,0,13949068.181818182,0.0,400.32103333333333,278.5084384564928,460319250.0,492544860.0,4070931.8181818184,,600481550.0,,1374239800.0,134340750.0
+,,43,,,,,,,,,45548550.0,,,
+,,43,,,,,,,,,27051300.0,,,
+47.65665795519076,883081599.9999999,0,13790505.813953489,6366952.558230561,588.7210666666665,475.3485108317559,592991750.0,729977459.9999999,6572094.186046509,,883081599.9999999,,1952143300.0,282600049.9999999
+,,64,,,,,,,,,58297599.99999988,,,
+,,64,,,,,,,,,31929599.999999873,,,
+31.18811881188118,1157257599.9999998,0,13736000.0,0.0,771.5050666666665,296.1952011529341,879104000.0,953922659.9999996,4283999.999999998,,1157257599.9999998,,2808173600.0,274175999.9999999
+,,84,,,,,,,,,75353599.99999976,,,
+,,84,,,,,,,,,41370599.99999976,,,
+31.4016505939065,1518988599.9999998,0,13713678.57142857,4363622.788203097,1012.6590666666665,298.1283541246899,1151949000.0,1263417359.9999998,4306321.428571428,,1518988599.9999998,,3933501600.0,361731000.0
+,,112,,,,,,,,,84325879.99999976,,,
+,,112,,,,,,,,,47556439.99999976,,,
+33.63099264393908,2026920279.9999998,0,13484895.714285715,8033913.395714747,1351.2801866666666,318.88109881104907,1510308320.0,1711726475.9999998,4535104.285714285,,2026920279.9999998,,5411119600.0,507931680.0
+,,150,,,,,,,,,108086279.99999976,,,
+,,150,,,,,,,,,61430779.99999976,,,
+51.58515042309632,3066343779.999999,0,13433110.0,11282148.534728166,2044.229186666666,527.9911415833434,2014966500.0,2619914615.9999986,6929489.999999995,,3066343779.999999,,7390483440.0,1039423499.9999993
+,,228,,,,,,,,,148816099.99999905,,,
+,,228,,,,,,,,,76999739.99999905,,,
+34.027996968065764,4109454699.999999,0,13444952.105263159,0.0,2739.636466666666,322.6874749258995,3065449080.0,3542636519.9999986,4575047.894736842,,4109454699.999999,,10395396440.0,1043110920.0
+,,306,,,,,,,,,195733339.99999908,,,
+,,306,,,,,,,,,101256119.99999908,,,
+34.214718810729835,5515143039.999999,0,13426247.25490196,786269.4899820857,3676.7620266666663,324.4894515443197,4108431660.0,4795385327.999999,4593752.7450980395,,5515143039.999999,,14427851400.0,1405688340.0
+,,411,,,,,,,,,260487879.99999905,,,
+,,411,,,,,,,,,135601809.99999905,,,
+34.361528059260834,7409204829.999999,0,13411577.15328467,2505674.9326593424,4939.469886666666,325.9115391510886,5512158210.0,6458741459.999999,4608422.846715328,,7409204829.999999,,19841738320.0,1894061790.0
+,,552,,,,,,,,,352295709.9999991,,,
+,,552,,,,,,,,,185003469.9999991,,,
+51.85547699854152,11247483309.999998,0,13409196.956521738,6212598.974337477,7498.322206666666,531.7675614596227,7401876720.0,9817367435.999998,6953403.043478259,,11247483309.999998,,27115341340.0,3838278479.999999
+,,839,,,,,,,,,525188469.9999981,,,
+,,839,,,,,,,,,274612039.9999981,,,
+34.517942555472146,15127034019.999998,0,13395982.467222884,8004747.856454378,10084.689346666666,327.43180690794986,11239229290.0,13221095184.0,4624017.532777116,,15127034019.999998,,38177821180.0,3879550710.0
+,,1000,,,,,,,,,2348974019.999998,,,
+,,1000,,,,,,,,,2052104019.999998,,,
+34.57191270599324,19756424020.0,0,13390610.0,1250126153.1627643,13170.949346666666,327.9576009084863,13390610000.0,17089537176.000002,4629390.000000002,,19756424020.0,,53030243160.0,4629390000.000002
+,,1000,,,,,,,,,6978364020.0,,,
+,,1000,,,,,,,,,6681494020.0,,,
+34.57191270599323,24385814020.0,0,13390610.0,6978364020.0,16257.209346666667,327.9576009084861,13390610000.0,20371931028.0,4629390.0,,24385814020.0,,70734563160.0,4629390000.0
+,,1000,,,,,,,,,11607754020.0,,,
+,,1000,,,,,,,,,11310884020.0,,,
+52.066261357772326,31357804019.999996,0,13390610.0,11607754020.0,20905.202679999995,534.7262134801983,13390610000.0,24132384852.0,6971989.999999996,,31357804019.999996,,88438883160.0,6971989999.999996
+,,1000,,,,,,,,,18579744019.999996,,,
+,,1000,,,,,,,,,18282874019.999996,,,
+34.571912705993256,35987194020.0,0,13390610.0,18579744019.999996,23991.46268,327.9576009084865,13390610000.0,25032192000.0,4629390.000000004,,35987194020.0,,108485803160.0,4629390000.000004
+,,1000,,,,,,,,,23209134020.0,,,
+,,1000,,,,,,,,,22912264020.0,,,
+34.57191270599323,40616584020.0,0,13390610.0,23209134020.0,27077.72268,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,40616584020.0,,126190123160.0,4629390000.0
+,,1000,,,,,,,,,27838524020.0,,,
+,,1000,,,,,,,,,27541654020.0,,,
+34.57191270599323,45245974020.0,0,13390610.0,27838524020.0,30163.982679999997,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,45245974020.0,,143894443160.0,4629390000.0
+,,1000,,,,,,,,,32467914020.0,,,
+,,1000,,,,,,,,,32171044020.0,,,
+52.06626135777235,52217964020.0,0,13390610.0,32467914020.0,34811.97601333333,534.7262134801986,13390610000.0,25032192000.000004,6971990.0,,52217964020.0,,161598763160.0,6971990000.0
+,,1000,,,,,,,,,39439904020.0,,,
+,,1000,,,,,,,,,39143034020.0,,,
+34.57191270599323,56847354020.0,0,13390610.0,39439904020.0,37898.236013333335,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,56847354020.0,,181645683160.0,4629390000.0
+,,1000,,,,,,,,,44069294020.0,,,
+,,1000,,,,,,,,,43772424020.0,,,
+34.57191270599323,61476744020.0,0,13390610.0,44069294020.0,40984.49601333334,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,61476744020.0,,199350003160.0,4629390000.0
+,,1000,,,,,,,,,48698684020.0,,,
+,,1000,,,,,,,,,48401814020.0,,,
+34.57191270599323,66106134020.0,0,13390610.0,48698684020.0,44070.75601333333,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,66106134020.0,,217054323160.0,4629390000.0
+,,1000,,,,,,,,,53328074020.0,,,
+,,1000,,,,,,,,,53031204020.0,,,
+52.06626135777235,73078124020.0,0,13390610.0,53328074020.0,48718.74934666667,534.7262134801986,13390610000.0,25032192000.0,6971990.0,,73078124020.0,,234758643160.0,6971990000.0
+,,1000,,,,,,,,,60300064020.0,,,
+,,1000,,,,,,,,,60003194020.0,,,
+34.57191270599323,77707514020.0,0,13390610.0,60300064020.0,51805.009346666666,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,77707514020.0,,254805563160.0,4629390000.0
+,,1000,,,,,,,,,64929454020.0,,,
+,,1000,,,,,,,,,64632584020.0,,,
+34.57191270599323,82336904020.0,0,13390610.0,64929454020.0,54891.26934666666,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,82336904020.0,,272509883160.0,4629390000.0
+,,1000,,,,,,,,,69558844020.0,,,
+,,1000,,,,,,,,,69261974020.0,,,
+34.57191270599323,86966294020.0,0,13390610.0,69558844020.0,57977.52934666666,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,86966294020.0,,290214203160.0,4629390000.0
+,,1000,,,,,,,,,74188234020.0,,,
+,,1000,,,,,,,,,73891364020.0,,,
+52.06626135777235,93938284020.0,0,13390610.0,74188234020.0,62625.522679999995,534.7262134801986,13390610000.0,25032192000.0,6971990.0,,93938284020.0,,307918523160.0,6971990000.0
+,,1000,,,,,,,,,81160224020.0,,,
+,,1000,,,,,,,,,80863354020.0,,,
+34.57191270599323,98567674020.0,0,13390610.0,81160224020.0,65711.78268,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,98567674020.0,,327965443160.0,4629390000.0
+,,1000,,,,,,,,,85789614020.0,,,
+,,1000,,,,,,,,,85492744020.0,,,
+34.57191270599323,103197064020.0,0,13390610.0,85789614020.0,68798.04268,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,103197064020.0,,345669763160.0,4629390000.0
+,,1000,,,,,,,,,90419004020.0,,,
+,,1000,,,,,,,,,90122134020.0,,,
+34.57191270599323,107826454020.0,0,13390610.0,90419004020.0,71884.30268,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,107826454020.0,,363374083160.0,4629390000.0
+,,1000,,,,,,,,,95048394020.0,,,
+,,1000,,,,,,,,,94751524020.0,,,
+52.06626135777235,114798444020.0,0,13390610.0,95048394020.0,76532.29601333334,534.7262134801986,13390610000.0,25032192000.0,6971990.0,,114798444020.0,,381078403160.0,6971990000.0
+,,1000,,,,,,,,,102020384020.0,,,
+,,1000,,,,,,,,,101723514020.0,,,
+34.57191270599323,119427834020.0,0,13390610.0,102020384020.0,79618.55601333333,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,119427834020.0,,401125323160.0,4629390000.0
+,,1000,,,,,,,,,106649774020.0,,,
+,,1000,,,,,,,,,106352904020.0,,,
+34.57191270599323,124057224020.0,0,13390610.0,106649774020.0,82704.81601333333,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,124057224020.0,,418829643160.0,4629390000.0
+,,1000,,,,,,,,,111279164020.0,,,
+,,1000,,,,,,,,,110982294020.0,,,
+34.57191270599323,128686614020.0,0,13390610.0,111279164020.0,85791.07601333334,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,128686614020.0,,436533963160.0,4629390000.0
+,,1000,,,,,,,,,115908554020.0,,,
+,,1000,,,,,,,,,115611684020.0,,,
+52.06626135777235,135658604020.0,0,13390610.0,115908554020.0,90439.06934666667,534.7262134801986,13390610000.0,25032192000.0,6971990.0,,135658604020.0,,454238283160.0,6971990000.0
+,,1000,,,,,,,,,122880544020.0,,,
+,,1000,,,,,,,,,122583674020.0,,,
+34.57191270599323,140287994020.0,0,13390610.0,122880544020.0,93525.32934666667,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,140287994020.0,,474285203160.0,4629390000.0
+,,1000,,,,,,,,,127509934020.0,,,
+,,1000,,,,,,,,,127213064020.0,,,
+34.57191270599323,144917384020.0,0,13390610.0,127509934020.0,96611.58934666666,327.9576009084861,13390610000.0,25032192000.0,4629390.0,,144917384020.0,,491989523160.0,4629390000.0
+
