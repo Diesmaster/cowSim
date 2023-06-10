@@ -7,6 +7,7 @@ import csv
 from io import StringIO
 from cow_sim import Cow_simulator
 from financial_models import Financial_model
+from price import Price_model
 
 
 #JSON to csv data
@@ -282,9 +283,13 @@ if not sys.argv[2]:
 
 new_sim = Cow_simulator(150000000)
 fin_mod = Financial_model()
+#new_price = Price_model(config.price_per_kg_normal, exceptions={'6':60000}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+#print(new_price)
 
-new_sim.import_fin_module(fin_mod)
-res = new_sim.run_sim(40, True)
+
+
+#new_sim.import_fin_module(fin_mod)
+res = new_sim.run_sim(int(sys.argv[1]), False)
 #res = new_sim.get_end_financials()
 print(res)
 
@@ -297,4 +302,4 @@ print(res)
 #res = res_to_data(res, list_wants)
 
 
-print( dict_to_csv_parser([res]) )
+#print( dict_to_csv_parser([res]) )

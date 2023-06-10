@@ -3,14 +3,14 @@ import random
 import sys
 import config
 from financial_models import Financial_model
+from price import Price_model
 
 # todo
-# personal financial aspects 
-# more indepth pricing models
+# personal financial aspects
 
 class Cow_simulator:
     def __init__(self, invested):
-        self.price_per_kg_normal = config.price_per_kg_normal
+        self.price_per_kg_normal = Price_model(config.price_per_kg_normal, exceptions={'6':config.price_per_kg_eid_increase}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.my_share_low = config.my_share_low
         self.percentage_of_dry_matter = config.percentage_of_dry_matter
         self.price_per_kg_eid_increase = config.price_per_kg_eid_increase
@@ -113,7 +113,7 @@ class Cow_simulator:
     def get_price_of_meat(self, month):
         #check eid ul adha
         if month == 5:
-            return self.price_per_kg_normal*((self.price_per_kg_eid_increase/100)+1)
+            return self.price_per_kg_normal * ((self.price_per_kg_eid_increase/100)+1)
         else:
             return self.price_per_kg_normal
 
@@ -214,6 +214,9 @@ class Cow_simulator:
         if verbose == True:
             print("end-- of the month: " + str(self))
 
+        if isinstance(self.price_per_kg_normal, Price_model):
+            self.price_per_kg_normal.push_month()
+
         if not self.fin_mod == None:
           self.fin_mod.gather_data_end(self)
 
@@ -270,7 +273,7 @@ class Cow_simulator:
       return self.calculate_amount_fermented_poop_sim() * self.fermented_poop_price * 30
 
     def calculate_cow_revenue_sim(self):
-      return self.amount_cow_weight * self.get_price_of_meat(self.n_month % 12)
+      return self.get_price_of_meat(self.n_month % 12)*self.amount_cow_weight
 
     def calculate_total_revenue_sim(self):
       return self.calculate_cow_revenue_sim() + self.calculate_poop_revenue_sim()
