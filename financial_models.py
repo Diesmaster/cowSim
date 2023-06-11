@@ -159,14 +159,14 @@ class Financial_model:
 		EMA['IRR'] = ((EMA1['EMA'][len(EMA1['EMA'])-1]*(self.percentage_own/100)/self.money_invested)-1)*100
 		EMA['IRR_AVR_Y'] = ((EMA['IRR']/100 + 1)**(1/(len(EMA1['EMA'])/12))-1)*100
 		DCF1 = self.discounted_cashflow_analysis(one_year_discount_amount)
-		DCF = {}
-		DCF['Valuation'] = DCF1['FCF'][len(DCF1['FCF'])-1]*(self.percentage_own/100)
-		DCF['IRR'] = ((DCF1['FCF'][len(DCF1['FCF'])-1]*(self.percentage_own/100)/self.money_invested)-1)*100
-		DCF['IRR_AVR_Y'] = ((DCF['IRR']/100 + 1)**(1/(len(DCF1['FCF'])/12))-1)*100
+		FCF = {}
+		FCF['Valuation'] = DCF1['FCF'][len(DCF1['FCF'])-1]*(self.percentage_own/100)
+		FCF['IRR'] = ((DCF1['FCF'][len(DCF1['FCF'])-1]*(self.percentage_own/100)/self.money_invested)-1)*100
+		FCF['IRR_AVR_Y'] = ((FCF['IRR']/100 + 1)**(1/(len(DCF1['FCF'])/12))-1)*100
 		DFO = {} 
 		DFO['Valuation'] = DCF1['CFO'][len(DCF1['CFO'])-1]*(self.percentage_own/100)
 		DFO['IRR'] = ((DCF1['CFO'][len(DCF1['CFO'])-1]*(self.percentage_own/100)/self.money_invested)-1)*100
 		DFO['IRR_AVR_Y'] = ((DFO['IRR']/100 + 1)**(1/(len(DCF1['CFO'])/12))-1)*100
 
-		return {'personal':{'NAV':NAV, 'EMA':EMA, 'DCF':DCF, 'DFO':DFO}}
+		return {'personal':{'NAV':NAV, 'EMA':EMA, 'FCF':FCF, 'DFO':DFO}}
 
