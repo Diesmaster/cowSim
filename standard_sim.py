@@ -67,6 +67,8 @@ class Standard_sim:
 		self.sim.check_sanity = lambda sim: True if sim.amount_balance > 0 else False
 
 
+		#creation of pass month automatically
+		#takes in the std logic and looks for all events that need checking in that period
 		event_pass_month_start_funcs = self.filter_func_from_obj_array(get_attr_with_filter(self.sim, 'event_month_start_'), 'test_trigger')
 		event_pass_month_middle_funcs = self.filter_func_from_obj_array(get_attr_with_filter(self.sim, 'event_month_middle_'), 'test_trigger')
 		event_pass_month_end_funcs = self.filter_func_from_obj_array(get_attr_with_filter(self.sim, 'event_month_end_'), 'test_trigger')
@@ -79,8 +81,10 @@ class Standard_sim:
 
 		month_arr = [self.sim.event_pass_month_start.effect, self.sim.event_pass_month_middle.effect, self.sim.event_pass_month_end.effect, self.sim.event_pass_month_final.effect]
 		
-
-		self.sim.pass_month = self.wrap_around(month_arr, self.sim.pass_month, self.sim.check_sanity)
+		if hasattr(self.sim, "pass_month") == True:
+			self.sim.pass_month = self.wrap_around(month_arr, self.sim.pass_month, self.sim.check_sanity)
+		else:
+			self.sim.pass_month = self.wrap_around(month_arr, lambda: None, self.sim.check_sanity)
 
 		### Make the pass month func
 		#copy_base = types.MethodType(self.sim.event_pass_month_start.effect, None)
@@ -98,7 +102,9 @@ class Standard_sim:
 			res = logic()
 			if arr_check(self.sim) == False:
 				print("somewhere here it becomes insolvent")
-				return {'error':'somewhere here it becomes insolvent'}				
+				return {'error':'somewhere here it becomes insolvent'}
+			if res == None:
+				return self.sim.get_sim_return_obj()				
 			return res
 
 		return test

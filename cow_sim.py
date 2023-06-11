@@ -237,10 +237,6 @@ class Cow_simulator:
 
         return {'error':'', 'cows':self.amount_cows, 'balance':self.amount_balance}
 
-    #dont touch
-    def pass_month(self):
-        return self.get_sim_return_obj()
-
     def push_month(self):
         self.n_month += 1
         
