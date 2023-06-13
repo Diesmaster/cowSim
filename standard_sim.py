@@ -4,6 +4,7 @@
 
 from functools import reduce
 import types
+import datetime
 
 #util funcs
 def get_funcs_with_filter(obj, str_filter):
@@ -66,7 +67,65 @@ class Standard_sim:
 
 		self.sim.check_sanity = lambda sim: True if sim.amount_balance > 0 else False
 
+		self.make_pass_month()
+		
+		self.sim.max_var_all_else_equal = self.make_max_var_all_else_equal()
 
+		self.sim.run_sim = self.make_run_sim() 
+
+		### Make the pass month func
+		#copy_base = types.MethodType(self.sim.event_pass_month_start.effect, None)
+
+	def make_run_sim(self):
+		def run_sim(amount_cycles, change_con=None, change_func=None, verbose=False):
+			amount_used = 0
+			amount_cycles_max = 0
+			total_return = 0
+			res = {}
+			ret = []
+
+			for x in range(0, int(amount_cycles*self.sim.cycle_length)):
+				if self.sim.amount_cows == 0:
+					test = self.sim.amount_balance
+				
+				if (not change_con == None) and (not change_func == None):
+					if change_con() == True:
+						res = change_func()
+					
+						if verbose == True: 
+							ret.append(res)
+					
+						return res
+
+				#if self.max_var_all_else_equal("amount_cows_to_buy", 0, self.amount_max_capacity) > self.amount_change_to_cycle_strat:
+				#	res = self.run_sim_cycle_strat( int(amount_cycles-(x/self.cycle_length)), 12)
+
+				#	if verbose == True: 
+				#		ret.append(res)
+				#	return res
+
+				res = self.sim.pass_month()
+				if verbose == True: 
+					ret.append(res)
+
+				self.sim.n_month +=1
+
+				#if self.bool_financials == True:
+				#    if not res['financials'] == '':
+				#        print(res)
+
+			if verbose == True:  
+				print(self)
+
+			self.sim.event_month_final_sell_cows.effect()
+
+			if verbose == True:
+				return ret 
+			return res
+
+		return run_sim
+
+	def make_pass_month(self):
 		#creation of pass month automatically
 		#takes in the std logic and looks for all events that need checking in that period
 		event_pass_month_start_funcs = self.filter_func_from_obj_array(get_attr_with_filter(self.sim, 'event_month_start_'), 'test_trigger')
@@ -86,8 +145,36 @@ class Standard_sim:
 		else:
 			self.sim.pass_month = self.wrap_around(month_arr, lambda: None, self.sim.check_sanity)
 
-		### Make the pass month func
-		#copy_base = types.MethodType(self.sim.event_pass_month_start.effect, None)
+
+	def make_max_var_all_else_equal(self):
+		def max_var_all_else_equal(name, n_start, n_max, n_step_size=1):
+			exit = False
+
+			while exit == False:
+				n_start += n_step_size
+
+				if n_start >= n_max:
+						n_start = n_max
+						exit = True
+						return n_start
+
+				#create a new sim
+				new_sim = self.sim.set_stage(self.sim, 0, self.sim.amount_balance, self.sim.cycle_start)
+				setattr(new_sim, name, n_start)
+
+				#loop forward for 1 cycle
+				for x in range(0, int(self.sim.cycle_length)):
+					#print(n_start)
+
+					res = new_sim.pass_month()
+
+					new_sim.n_month +=1
+					if not res['error'] == '':
+						exit = True
+
+			return n_start
+
+		return max_var_all_else_equal
 
 	def filter_func_from_obj_array(self, arr, str_filter):
 		ret = []
@@ -101,7 +188,7 @@ class Standard_sim:
 				func()
 			res = logic()
 			if arr_check(self.sim) == False:
-				print("somewhere here it becomes insolvent")
+				#print("somewhere here it becomes insolvent")
 				return {'error':'somewhere here it becomes insolvent'}
 			if res == None:
 				return self.sim.get_sim_return_obj()				

@@ -7,11 +7,7 @@ from financial_models import Financial_model
 from price import Price_model
 from events_sim import Event_sim
 
-
 # todo
-# run sim needs auto creation
-# calculate n if all else equal needs auto creation
-
 # fix how price is called
 # make config config-able for multiple sims
 # make config auto read.
@@ -21,18 +17,23 @@ class Cow_simulator:
 
     def event_condition_buy_cows(self):
         if ((self.n_month - self.cycle_start) % self.cycle_length) == 0:
+            #print("n_month: " + str(self.n_month) + ", cycle_start: " + str(self.cycle_start) + ", cycle_length: " + str(self.cycle_length))
             return True 
         return False
 
     def event_effect_buy_cows(self):
         self.amount_start_balance = self.amount_balance
         amount_used = self.amount_balance
-        n_cows = self.calculate_amount_of_cow_sim(0, amount_used)
-        cost = self.calculate_cow_buy_cost(n_cows)
+        
+        if self.amount_cows_to_buy == 0:
+            self.amount_cows_to_buy = self.max_var_all_else_equal("amount_cows_to_buy", self.amount_cows_bought_last, self.amount_max_capacity)
+        
+        cost = self.calculate_cow_buy_cost(self.amount_cows_to_buy)
         self.amount_balance -= cost
-        self.amount_cow_weight += self.cattle_bought_at_kg*n_cows
-        self.amount_cows += n_cows
-        self.amount_cows_bought_last = n_cows
+        self.amount_cow_weight += self.cattle_bought_at_kg*self.amount_cows_to_buy
+        self.amount_cows += self.amount_cows_to_buy
+        self.amount_cows_bought_last = self.amount_cows_to_buy
+        self.amount_cows_to_buy = 0
 
     def event_condition_sell_cows(self):
         if( (self.n_month - self.cycle_start) % self.cycle_length) == 2:
@@ -44,7 +45,7 @@ class Cow_simulator:
         revenue = self.calculate_cow_revenue_sim()
         self.amount_balance += revenue
         self.amount_cow_weight = 0
-        self.amount_cows -= 0
+        self.amount_cows = 0
 
     def event_effect_pass_month_start(self):
         if not self.fin_mod == None:
@@ -78,8 +79,10 @@ class Cow_simulator:
         if not self.fin_mod == None:
           self.fin_mod.gather_data_end(self)        
 
+
+###todo fix config load
     def __init__(self, amount_invested=config.money_invested):
-        self.price_per_kg_normal = Price_model(config.price_per_kg_normal, exceptions={'6':config.price_per_kg_eid_increase}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_per_kg_normal = config.price_per_kg_normal#Price_model(config.price_per_kg_normal, exceptions={'6':config.price_per_kg_eid_increase}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.my_share_low = config.my_share_low
         self.percentage_of_dry_matter = config.percentage_of_dry_matter
         self.price_per_kg_eid_increase = config.price_per_kg_eid_increase
@@ -124,6 +127,7 @@ class Cow_simulator:
         
         self.cycle_start = 0
         self.amount_cows = 0
+        self.amount_cows_to_buy = 0;
         self.amount_balance = amount_invested
 
         #finance vars
@@ -179,10 +183,14 @@ class Cow_simulator:
 
         return new_sim
 
+###todo fix pricing funcs
     def get_price_of_meat(self, month):
         #check eid ul adha
-        if month == 5:
-            return self.price_per_kg_normal * ((self.price_per_kg_eid_increase/100)+1)
+        if type(self.price_per_kg_normal) == type(1):
+            if month == 5:
+                return self.price_per_kg_normal * ((self.price_per_kg_eid_increase/100)+1)
+            else:
+                return self.price_per_kg_normal #.get_price()
         else:
             return self.price_per_kg_normal.get_price()
 
@@ -192,60 +200,11 @@ class Cow_simulator:
         else:
             return self.price_of_concentraat
 
-    #setters
-    def buy_cows(self, n_cows):
-       cost = self.calculate_cow_buy_cost(n_cows)
-       self.amount_balance -= cost
-       self.amount_cow_weight += self.cattle_bought_at_kg*n_cows
-       self.amount_cows += n_cows
 
-    #used to test how many cows we can buy.
-    def pass_month_arg_cow(self, n_cows, verbose=False):
-        if verbose == True:
-            print("begin of the month: " + str(self))
-
-        #buy the cows again beginning of month
-        #todo fix that this can run with the event object.
-        #for this we need to make a run sim maximizing x function in the standard sim.
-        if self.event_month_middle_buy_cows.condition() == 0:
-            #print("new_sim: " + str(self))
-            #self.event_buy_cows.effect()
-            amount_used = self.amount_balance
-            self.buy_cows(n_cows)
-
-        #add cow weight
-        self.amount_cow_weight += self.amount_cows*self.monthly_targeted_adg_kg_per_cattle
-
-        #calculate costs of last month end of month
-        #print(self.test)
-        cost = self.get_total_cost_monthly()
-
-        self.amount_balance -= cost
-
-        #calculate montly profit poop
-        rev = self.get_total_revenue_monthly()
-        self.amount_balance += rev
-
-        if self.amount_balance < 0:
-            return {'error':'company becomes insolvent somewhere in this cycle'}
-
-        #calculate total profit end of month
-        self.event_month_final_sell_cows.test_trigger()
-
-        if verbose == True:
-            print("end-- of the month: " + str(self))
-
-        return {'error':'', 'cows':self.amount_cows, 'balance':self.amount_balance}
-
-    def push_month(self):
-        self.n_month += 1
-        
 
     #def calculations costs takes in n_cows
     def calculate_cow_buy_cost(self, n_cows):
         return n_cows * self.price_per_cow_250kg
-
-    # ---- using obj vars on a montly basis ------ #
 
     def amount_of_dry_feed_needed_daily_sim(self):
       return self.amount_cow_weight * (self.percentage_of_dry_matter / 100)
@@ -290,39 +249,33 @@ class Cow_simulator:
     def calculate_cow_revenue_sim(self):
       return self.get_price_of_meat(self.n_month % 12)*self.amount_cow_weight
 
-    # ---- end of overload  ----
-
-    def calculate_amount_of_cow_sim(self, n_start, total_money):
-        balance = 0
-        #print(n_start)
-
-        while balance < total_money:
-            n_start += 1
-        
-
-
-
-            new_sim = self.set_stage(self, 0, total_money, self.cycle_start)
-            
-            for x in range(0, int(self.cycle_length)):
-
-                res = new_sim.pass_month_arg_cow(n_start)  
-
-                new_sim.push_month()
-                if not res['error'] == '':
-                    return n_start -1
-
-            if n_start >= self.amount_max_capacity:
-                return self.amount_max_capacity
-
-        return n_start - 1
-
     #todo
     def cost_rent():
       return 0
 
-    #financials
 
+
+
+    #util funcs
+    def get_sim_return_obj(self):
+        if self.bool_financials == False:
+            return {'error':'', 'cows':self.amount_cows, 'balance':self.amount_balance}
+        else:
+            financials = self.get_financials_per_cycle() 
+            return {'error':'', 'financials':financials, 'cows':self.amount_cows, 'balance':self.amount_balance}
+
+
+    def set_config_value(self, var_name, new_value):
+        setattr(self, var_name, new_value)
+        return getattr(self, var_name)
+
+    def import_fin_module(self, fin_mod):
+        self.fin_mod = fin_mod
+
+
+
+
+    ### financials TODO move all to financial lib
     def calculate_profit(self, amount_costs, amount_revenue):
       return amount_revenue-amount_costs 
 
@@ -334,28 +287,6 @@ class Cow_simulator:
 
     def set_financials(self, financials=False):
         self.bool_financials = financials
-
-    def push_pass_multiple_sims(self, sims):
-        for x in range(0, len(sims)):
-            res = sims[x].pass_month()
-            sims[x].push_month()
-
-
-    def add_list_to_parent(self, sims):
-        if len(sims) == 1:
-            return sims[0]
-        elif len(sims) == 2:
-            return sims[0] + sims[1]
-        elif len(sims) > 2:
-            new_sim = sims[0] + sims[1]
-            for x in range(2, len(sims)):
-                new_sim = new_sim + sims[x]
-
-        return new_sim
-
-    def print_individually(self, sims):
-        for x in range(0, len(sims)):
-            print(sims[x])
 
     def calculate_final_cost_per_cow(self):
         cost = self.amount_start_balance - self.end_balance
@@ -402,13 +333,17 @@ class Cow_simulator:
         
         return {"total IRR":perc_IRR, "cost_per_cycle":cost, "cost_per_cow":cost_per_cow, "profit_per_cycle":profit, "profit_per_cow":profit_per_cow, "margin":margin, "annualized_IRR":annualized_IRR, 'valuations':valuations}
 
-    def get_sim_return_obj(self):
-        if self.bool_financials == False:
-            return {'error':'', 'cows':self.amount_cows, 'balance':self.amount_balance}
-        else:
-            financials = self.get_financials_per_cycle() 
-            return {'error':'', 'financials':financials, 'cows':self.amount_cows, 'balance':self.amount_balance}
 
+
+
+
+
+
+
+
+
+####REKT FUNCS: buys too many cows
+# get this run out of this obj deze func == rekt
     def run_sim_cycle_strat(self, amount_cycles, amount_of_cycles_per_year, verbose=False):
       if amount_of_cycles_per_year > 12:
         return {'error': 'Impossible amount of cycles'}
@@ -444,7 +379,7 @@ class Cow_simulator:
             sims.append(new_sim)
 
         self.push_pass_multiple_sims(sims)
-        self.push_month()
+        self.n_month += 1
 
         new_sim = self.add_list_to_parent(sims)
 
@@ -454,56 +389,30 @@ class Cow_simulator:
 
       
       new_sim.event_month_final_sell_cows.effect()
-      #print(new_sim)
       if verbose == True:
         return ret
       return new_sim.get_sim_return_obj()
 
 
-    #code
-    def run_sim(self, amount_cycles, verbose=False):
-      amount_used = 0
-      amount_cycles_max = 0
-      total_return = 0
-      res = {}
-      ret = []
-
-      for x in range(0, int(amount_cycles*self.cycle_length)):
-        if self.amount_cows == 0:
-          test = self.amount_balance
-          if self.calculate_amount_of_cow_sim(0, test) > self.amount_change_to_cycle_strat:
-
-             res = self.run_sim_cycle_strat( int(amount_cycles-(x/self.cycle_length)), 12)
-             if verbose == True: 
-               ret.append(res)
-             return res
-
-        res = self.pass_month()
-        if verbose == True: 
-            ret.append(res)
+    def push_pass_multiple_sims(self, sims):
+        for x in range(0, len(sims)):
+            res = sims[x].pass_month()
+            sims[x].n_month += 1
 
 
-        self.push_month()
+    def add_list_to_parent(self, sims):
+        if len(sims) == 1:
+            return sims[0]
+        elif len(sims) == 2:
+            return sims[0] + sims[1]
+        elif len(sims) > 2:
+            new_sim = sims[0] + sims[1]
+            for x in range(2, len(sims)):
+                new_sim = new_sim + sims[x]
 
+        return new_sim
 
-        #if self.bool_financials == True:
-        #    if not res['financials'] == '':
-        #        print(res)
-
-        if verbose == True:  
-          print(self)
-
-      self.event_month_final_sell_cows.effect()
-      if verbose == True:
-        return ret 
-      return res
-
-    def set_config_value(self, var_name, new_value):
-        setattr(self, var_name, new_value)
-        return getattr(self, var_name)
-
-    def import_fin_module(self, fin_mod):
-        self.fin_mod = fin_mod
-
-
-
+    def print_individually(self, sims):
+        for x in range(0, len(sims)):
+            print(sims[x])
+    
