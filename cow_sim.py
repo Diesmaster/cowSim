@@ -77,9 +77,6 @@ class Cow_simulator:
         rev = self.get_total_revenue_monthly()
         self.amount_balance += rev
 
-        #if hasattr(self, 'fin_mod'):
-        #   self.fin_mod.gather_data_mid(self)
-
         return True    
 
     def event_effect_pass_month_final(self):

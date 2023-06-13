@@ -21,7 +21,7 @@ class Financial_model:
 		#fix the sim
 		self.sim.fin_mod = self
 		
-		#self.fix_data_gatthering()
+		self.fix_data_gatthering()
 
 	def wrap_around(self, arr, logic, arr_check):
 		def test():
@@ -39,9 +39,9 @@ class Financial_model:
 
 	def fix_data_gatthering(self):
 		self.sim.event_pass_month_start.effect = self.wrap_around([self.gather_data_start], self.sim.event_pass_month_start.effect, [])
-		self.sim.event_pass_month_middle.effect = self.wrap_around([self.gather_data_middle], self.sim.event_pass_month_start.effect, [])
-		self.sim.event_pass_month_end.effect = self.wrap_around([], self.sim.event_pass_month_start.effect, [])
-		self.sim.event_pass_month_final.effect = self.wrap_around([], self.sim.event_pass_month_start.effect, [self.gather_data_final])
+		self.sim.event_pass_month_middle.effect = self.wrap_around([], self.sim.event_pass_month_middle.effect, [])
+		self.sim.event_pass_month_end.effect = self.wrap_around([], self.sim.event_pass_month_end.effect, [])
+		self.sim.event_pass_month_final.effect = self.wrap_around([], self.sim.event_pass_month_final.effect, [self.gather_data_final])
 
 		return True
 
