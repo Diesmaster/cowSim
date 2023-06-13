@@ -114,9 +114,11 @@ class Cow_simulator:
         # examples is current month, starting month, etc. 
         self.n_month = 0 #REQ
         self.n_cycle_start = 0 #REQ
+        self.n_buffer = 10 #REQ
+        self.amount_balance = amount_invested #REQ
+
         self.n_cycle_devider = self.cycle_length
         self.n_cycles_per_year = 0
-        self.n_buffer = 10 #REQ
         self.bool_feed_change = False
 
         #the other type of var is amount
@@ -125,8 +127,7 @@ class Cow_simulator:
         self.amount_cow_weight = 0 
         self.amount_cows = 0
         self.amount_cows_to_buy = 0;
-        self.amount_balance = amount_invested #REQ
-
+        
         #finance vars
         self.amount_money_invested = amount_invested
         self.amount_start_balance = 0;
@@ -136,11 +137,13 @@ class Cow_simulator:
         self.financials_per_cycle = []
         self.fin_mod = None
 
+    #NOT REQ but REComanded
     #str implementation is usr specific, what do you want to see
     def __str__(self):
        string = "Month: " + str(self.n_month) + ", Total Cow Weight: " + str(self.amount_cow_weight) + ", Amount of Cows: " + str(self.amount_cows) + ", Balance: " + str(self.amount_balance) 
        return string
 
+    #REQ:
     #sims interpretation of the copy function
     def set_stage(self, org_sim, cows, amount_balance, start=0):
         exception = {'amount_cows':cows, 'n_cycle_start':start, 'amount_balance':amount_balance}
@@ -149,20 +152,13 @@ class Cow_simulator:
 
         return new_sim
 
+    #REQ:
     def get_sim_return_obj(self):
         if self.bool_financials == False:
             return {'error':'', 'cows':self.amount_cows, 'balance':self.amount_balance}
         else:
             financials = self.get_financials_per_cycle() 
             return {'error':'', 'financials':financials, 'cows':self.amount_cows, 'balance':self.amount_balance}
-
-
-    def set_config_value(self, var_name, new_value):
-        setattr(self, var_name, new_value)
-        return getattr(self, var_name)
-
-    def import_fin_module(self, fin_mod):
-        self.fin_mod = fin_mod
 
 
     ##  for calculation, revenue_montly and cost_montly are added together automatically 
@@ -245,6 +241,9 @@ class Cow_simulator:
 
 
     ### financials TODO move all to financial lib
+    def import_fin_module(self, fin_mod):
+        self.fin_mod = fin_mod
+
     def set_financials(self, financials=False):
         self.bool_financials = financials
 

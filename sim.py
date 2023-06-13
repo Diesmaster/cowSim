@@ -218,7 +218,9 @@ def var_analysis(config_var_name, min, max, amount_of_increments, time_frame, am
 
     new_sim = Cow_simulator(amount_invested)
     
-    new_sim.set_config_value(config_var_name, value)
+    #new_sim.set_config_value(config_var_name, value)
+    setattr(new_sim, config.var_name, value)
+
 
     res = new_sim.run_sim(time_frame)
     res['value'] = value
