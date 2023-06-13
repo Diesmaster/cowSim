@@ -294,20 +294,6 @@ std_sim = Standard_sim(new_sim)
 
 #new_sim.import_fin_module(fin_mod)
 
-def test_con(sim):
-  def con():
-    if sim.max_var_all_else_equal("amount_cows_to_buy", 0, sim.amount_max_capacity) > sim.amount_change_to_cycle_strat:
-      return True 
-    return False
-  return con 
-
-def test_func(sim):
-  def func():
-    res = sim.run_sim_cycle_strat(int(int(sys.argv[1])-(sim.n_month/sim.cycle_length)), 12)
-    return res
-
-  return func
-
 
 res = new_sim.run_sim(int(sys.argv[1]))#, test_con(new_sim), test_func(new_sim))
 #res = new_sim.get_end_financials()
