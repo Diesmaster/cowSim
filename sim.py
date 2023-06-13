@@ -309,10 +309,17 @@ def test_func(sim):
   return func
 
 
-res = new_sim.run_sim(int(sys.argv[1]), test_con(new_sim), test_func(new_sim))
+res = new_sim.run_sim(int(sys.argv[1]))#, test_con(new_sim), test_func(new_sim))
 #res = new_sim.get_end_financials()
 #res = fin_mod.get_personal_financials() 
 print(res)
+#print(new_sim)
+#print("n_month: " + str(new_sim.n_month) + " price kg: " + str(new_sim.price_per_kg_normal) + " price concen: " + str(new_sim.price_of_concentraat) + " price cow: " + str(new_sim.price_per_cow_250kg) + " price grass: " + str(new_sim.price_of_grass) + " price fermented poop " + str(new_sim.price_fermented_poop) )
+#print("cows last bought: " + str(new_sim.amount_cows_bought_last))
+#print("start: " + str(new_sim.amount_start_balance ))
+#print("end: " + str(new_sim.amount_end_balance ))
+
+
 
 #filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg', 'bool_financials']
 

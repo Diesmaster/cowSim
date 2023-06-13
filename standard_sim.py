@@ -4,7 +4,9 @@
 
 from functools import reduce
 import types
-import datetime
+
+import config
+
 from price import Price_model
 
 #util funcs
@@ -28,7 +30,7 @@ def create_copy_func(obj_old, exception):
 
 	for name in dir(obj_old):
 		result = exception.get(name)
-		if not name[:2] == "__" and not name[:5] == "event":
+		if not name[:2] == "__" and not name[:5] == "event" and not name[:5] == "price":
 			if not result ==  None:
 				if not result == '': 
 					setattr(new_obj, name, result)
@@ -50,6 +52,26 @@ def get_attr_with_filter(obj, str_filter):
 			ret.append(getattr(obj, name))
 
 	return ret
+
+def copy_when_prefix(obj, other, prefix):
+	for pre in prefix:
+		for name in dir(other):
+			if name[:len(pre)] == pre:
+				setattr(self, name, getattr(other, name))
+
+def add_when_prefix(obj, other, prefix):
+	for pre in prefix:
+		for name in dir(other):
+			if name[:len(pre)] == pre:
+				setattr(self, name, getattr(other, name)+getattr(self, name))
+
+def load_config(new_obj, name):
+    obj = getattr(config, name)
+    ret = []
+    for name in dir(obj): 
+        if not name[:2] == "__":
+            attr = getattr(obj, name)
+            setattr(new_obj, name, attr)
 
 class Standard_sim:
 	def __init__(self, sim):
@@ -74,8 +96,11 @@ class Standard_sim:
 
 		self.sim.run_sim = self.make_run_sim() 
 
-		### Make the pass month func
-		#copy_base = types.MethodType(self.sim.event_pass_month_start.effect, None)
+		self.sim.__eq__ = self.get_eq_func()
+
+		self.sim.__add__ = self.get_add_func()
+
+
 
 	def make_run_sim(self):
 		def run_sim(amount_cycles, change_con=None, change_func=None, verbose=False):
@@ -98,19 +123,16 @@ class Standard_sim:
 					
 						return res
 
-				#if self.max_var_all_else_equal("amount_cows_to_buy", 0, self.amount_max_capacity) > self.amount_change_to_cycle_strat:
-				#	res = self.run_sim_cycle_strat( int(amount_cycles-(x/self.cycle_length)), 12)
-
-				#	if verbose == True: 
-				#		ret.append(res)
-				#	return res
-
 				res = self.sim.pass_month()
 				if verbose == True: 
 					ret.append(res)
 
 				self.sim.n_month +=1
 
+				if not res['error'] == '':
+					
+					print(self.sim)
+					return res
 				#if self.bool_financials == True:
 				#    if not res['financials'] == '':
 				#        print(res)
@@ -118,13 +140,35 @@ class Standard_sim:
 			if verbose == True:  
 				print(self)
 
+			end_balance = self.sim.amount_end_balance
 			self.sim.event_month_final_sell_cows.effect()
+			self.sim.amount_end_balance = end_balance
 
 			if verbose == True:
 				return ret 
 			return res
 
 		return run_sim
+	
+	def get_eq_func(self):
+		
+		start = ['amount_', 'n_']
+		
+		def eq_func(og, other):
+			copy_when_prefix(og, other, start)
+			return og 
+
+		return eq_func
+
+	def get_add_func(self):
+		start = ['amount_']
+
+		def add_func(og, other):
+			add_when_prefix(og, other, start)
+			return og
+
+		return add_func
+
 
 	def get_update_prices_funct(self):
 		arr = get_attr_with_filter(self.sim, 'price_')
@@ -174,7 +218,7 @@ class Standard_sim:
 						return n_start
 
 				#create a new sim
-				new_sim = self.sim.set_stage(self.sim, 0, self.sim.amount_balance, self.sim.cycle_start)
+				new_sim = self.sim.set_stage(self.sim, 0, self.sim.amount_balance*((100-self.sim.n_buffer)/100), self.sim.n_cycle_start)
 				setattr(new_sim, name, n_start)
 
 				#loop forward for 1 cycle
@@ -184,10 +228,11 @@ class Standard_sim:
 					res = new_sim.pass_month()
 
 					new_sim.n_month +=1
+					#print("month: " + str(self.sim.n_month) + ", self: " + str(self.sim))
 					if not res['error'] == '':
 						exit = True
 
-			return n_start
+			return n_start-2
 
 		return max_var_all_else_equal
 
@@ -200,7 +245,13 @@ class Standard_sim:
 	def wrap_around(self, arr, logic, arr_check):
 		def test():
 			for func in arr:
-				func()
+				res = func()
+
+				err = None
+				if type(res) == type({}):
+					err = res.get('error')
+				if not (err == None) and not (err == '') :
+					return {'error':'somewhere here it becomes insolvent'}
 			res = logic()
 			if arr_check(self.sim) == False:
 				#print("somewhere here it becomes insolvent")

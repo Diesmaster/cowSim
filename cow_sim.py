@@ -6,17 +6,16 @@ import config
 from financial_models import Financial_model
 from price import Price_model
 from events_sim import Event_sim
+import standard_sim
+
 
 # todo
-# fix how price is called
-# make config config-able for multiple sims
-# make config auto read.
 # define eq, etc for the simulator.
 
 class Cow_simulator:
 
     def event_condition_buy_cows(self):
-        if ((self.n_month - self.cycle_start) % self.cycle_length) == 0:
+        if ((self.n_month - self.n_cycle_start) % self.cycle_length) == 0:
             #print("n_month: " + str(self.n_month) + ", cycle_start: " + str(self.cycle_start) + ", cycle_length: " + str(self.cycle_length))
             return True 
         return False
@@ -26,7 +25,7 @@ class Cow_simulator:
         amount_used = self.amount_balance
         
         if self.amount_cows_to_buy == 0:
-            self.amount_cows_to_buy = self.max_var_all_else_equal("amount_cows_to_buy", self.amount_cows_bought_last, self.amount_max_capacity)
+            self.amount_cows_to_buy = self.max_var_all_else_equal("amount_cows_to_buy", int(self.amount_cows_bought_last*0.9), self.amount_max_capacity)
         
         cost = self.calculate_cow_buy_cost(self.amount_cows_to_buy)
         self.amount_balance -= cost
@@ -36,25 +35,27 @@ class Cow_simulator:
         self.amount_cows_to_buy = 0
 
     def event_condition_sell_cows(self):
-        if( (self.n_month - self.cycle_start) % self.cycle_length) == 2:
+        if( (self.n_month - self.n_cycle_start) % self.cycle_length) == 2:
             return True 
         return False
 
     def event_effect_sell_cows(self):
-        self.end_balance = self.amount_balance
+        #print("month: " + str(self.n_month) + ", self: " + str(self))
+        self.amount_end_balance = self.amount_balance
         revenue = self.calculate_cow_revenue_sim()
         self.amount_balance += revenue
         self.amount_cow_weight = 0
         self.amount_cows = 0
 
     def event_condition_change_feed(self):
-        if (self.amount_cows > 100) and (self.price_of_concentraat_if_gt_100_decrease > 0):
+        if (self.amount_cows > 100) and (self.bool_feed_change == False):
             return True
         return False
 
     def event_effect_change_feed(self):
-        self.price_of_concentraat = Price_model(float(self.price_of_concentraat)*self.price_of_concentraat_if_gt_100_decrease, max_up=1, max_down=1, distribution='normal', n_per_year=12)
-        self.price_of_concentraat_if_gt_100_decrease = -1
+        self.bool_feed_change = True
+        self.price_of_concentraat = Price_model(float(self.price_of_concentraat)*((100-self.price_of_concentraat_if_gt_100_decrease)/100), max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        
 
     def event_effect_pass_month_start(self):
         if not self.fin_mod == None:
@@ -78,121 +79,85 @@ class Cow_simulator:
         if not self.fin_mod == None:
             self.fin_mod.gather_data_mid(self)
 
-        if isinstance(self.price_per_kg_normal, Price_model):
-            self.price_per_kg_normal.push_month()
-
-
         return True    
 
     def event_effect_pass_month_final(self):
         if not self.fin_mod == None:
           self.fin_mod.gather_data_end(self)        
 
-
 ###todo fix config load
     def __init__(self, amount_invested=config.money_invested):
-        ### prices
-        self.price_per_kg_normal = Price_model(config.price_per_kg_normal, exceptions={'6':config.price_per_kg_eid_increase}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
-        self.price_of_concentraat = Price_model(config.price_of_concentraat, max_up=1, max_down=1, distribution='normal', n_per_year=12)
-        self.price_per_cow_250kg = Price_model(config.price_per_cow_250kg, max_up=1, max_down=1, distribution='normal', n_per_year=12)
-        self.price_of_grass = Price_model(config.price_of_grass, max_up=1, max_down=1, distribution='normal', n_per_year=12)
-        self.price_fermented_poop = Price_model(config.price_fermented_poop, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        ##need in here bc cannot be put in here before init function is called
+        standard_sim.load_config(self, 'cow_sim_config')
 
-        #events
+        ### prices you need to call them prices_ at the start
+        self.price_per_kg_normal = Price_model(self.price_per_kg_normal, exceptions={'6':self.price_per_kg_eid}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_of_concentraat = Price_model(self.price_of_concentraat, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_per_cow_250kg = Price_model(self.price_per_cow_250kg, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_of_grass = Price_model(self.price_of_grass, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_fermented_poop = Price_model(self.price_fermented_poop, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+
+        #events you need to call them month start/middle/end/final so the program knows where to put it
         self.event_month_middle_buy_cows = Event_sim(self.event_condition_buy_cows, self.event_effect_buy_cows)
         self.event_month_final_sell_cows = Event_sim(self.event_condition_sell_cows, self.event_effect_sell_cows)
-        self.event_month_end_change_feed = Event_sim(self.event_condition_change_feed, self.event_effect_sell_cows)
+        self.event_month_end_change_feed = Event_sim(self.event_condition_change_feed, self.event_effect_change_feed)
+        
+        ## std boiler plate, here you can define logic that happens every month in the specified time period 
         self.event_pass_month_start = Event_sim(None, self.event_effect_pass_month_start)
         self.event_pass_month_middle = Event_sim(None, self.event_effect_pass_month_middle)
         self.event_pass_month_end = Event_sim(None, self.event_effect_pass_month_end)
         self.event_pass_month_final = Event_sim(None, self.event_effect_pass_month_final)
 
-
-        #config consts
-        self.my_share_low = config.my_share_low
-        self.my_share_high = config.my_share_high
-        self.price_of_concentraat_if_gt_100_decrease = config.price_of_concentraat_if_gt_100_decrease
-        self.monthly_targeted_adg_kg_per_cattle = config.monthly_targeted_adg_kg_per_cattle
-        self.cost_of_farmhand = config.cost_of_farmhand
-        self.cattle_bought_at_kg = config.cattle_bought_at_kg
-        self.cost_of_security_guard = config.cost_of_security_guard
-        self.money_invested = amount_invested
-        self.cycle_length = config.cycle_length
-        self.percentage_of_dry_matter = config.percentage_of_dry_matter
-        self.percentage_poop_dry = config.percentage_poop_dry
-        self.percentage_poop_fermented_weight_decrease = config.percentage_poop_fermented_weight_decrease
-        self.percentage_of_dry_matter_concentraat = config.percentage_of_dry_matter_concentraat
-        self.percentage_of_concentraat_dry = config.percentage_of_concentraat_dry
-        self.percentage_of_dry_matter_grass = config.percentage_of_dry_matter_grass
-        self.percentage_of_grass_dry = config.percentage_of_grass_dry
-
-        self.amount_max_capacity = config.amount_max_capacity
-        self.amount_change_to_cycle_strat = config.amount_change_to_cycle_strat
-
-        self.bool_financials = config.bool_financials
-        self.percentage_own = config.percentage_own
-        self.fin_mod = None
-
-
         #objt vars
-        self.n_month = 0
-        self.amount_cow_weight = 0
-        self.amount_of_cycles_per_year = 0
-        self.cycle_devider = self.cycle_length
-        
-        self.cycle_start = 0
+        #2 types of std var names n and amount
+        #n is for vars that are a number but should not be added.
+        # examples is current month, starting month, etc. 
+        self.n_month = 0 #REQ
+        self.n_cycle_start = 0 #REQ
+        self.n_cycle_devider = self.cycle_length
+        self.n_cycles_per_year = 0
+        self.n_buffer = 10 #REQ
+        self.bool_feed_change = False
+
+        #the other type of var is amount
+        #amount should be added if you have 2 farms aka 2 simulations.
+        #ex: amount of cows total = cows farm 1 + cows farm 2
+        self.amount_cow_weight = 0 
         self.amount_cows = 0
         self.amount_cows_to_buy = 0;
-        self.amount_balance = amount_invested
+        self.amount_balance = amount_invested #REQ
 
         #finance vars
+        self.amount_money_invested = amount_invested
         self.amount_start_balance = 0;
         self.amount_cows_bought_last = 0;
-        self.end_balance = 0
+        self.amount_end_balance = 0
+
         self.financials_per_cycle = []
+        self.fin_mod = None
 
-
+    #str implementation is usr specific, what do you want to see
     def __str__(self):
        string = "Month: " + str(self.n_month) + ", Total Cow Weight: " + str(self.amount_cow_weight) + ", Amount of Cows: " + str(self.amount_cows) + ", Balance: " + str(self.amount_balance) 
        return string
 
-    def __add__(self, other):
-        if not (self.n_month == other.n_month):
-            return {'error': 'cannot add 2 sims that are in different months'}
-
-        new_sim = Cow_simulator()
-        new_sim.amount_balance = self.amount_balance + other.amount_balance
-        new_sim.amount_cow_weight = self.amount_cow_weight + other.amount_cow_weight
-        new_sim.amount_cows =  self.amount_cows + other.amount_cows
-        new_sim.n_month = self.n_month
-        
-        new_sim.amount_start_balance = self.amount_start_balance + other.amount_start_balance;
-        new_sim.amount_cows_bought_last = self.amount_cows_bought_last + other.amount_cows_bought_last;
-        new_sim.end_balance = self.end_balance = other.end_balance
-
-        return new_sim
-
-    def __eq__(self, other):
-        if not (self.n_month == other.n_month):
-            return {'error': 'cannot equal 2 sims that are in different months'}
-
-        self.amount_cow_weight = other.amount_cow_weight
-        self.amount_cows = other.amount_cows
-        self.amount_cow_weight = other.amount_cow_weight
-        self.amount_balance = other.amount_balance
-        self.amount_start_balance = other.amount_start_balance;
-        self.amount_cows_bought_last = other.amount_cows_bought_last;
-        self.end_balance = other.end_balance
-
     #sims interpretation of the copy function
     def set_stage(self, org_sim, cows, n_balance=-1, start=0):
-        exception = {'amount_cows':cows, 'cycle_start':start, 'price_per_kg_normal':''}
+        exception = {'amount_cows':cows, 'n_cycle_start':start}
         if n_balance > -1:
             exception = {**exception, 'amount_balance':n_balance}
         new_sim = org_sim.copy_self(org_sim, exception)
 
 
         return new_sim
+
+
+    def set_config_value(self, var_name, new_value):
+        setattr(self, var_name, new_value)
+        return getattr(self, var_name)
+
+    def import_fin_module(self, fin_mod):
+        self.fin_mod = fin_mod
 
 
     #def calculations costs takes in n_cows
@@ -246,9 +211,6 @@ class Cow_simulator:
     def cost_rent():
       return 0
 
-
-
-
     #util funcs
     def get_sim_return_obj(self):
         if self.bool_financials == False:
@@ -258,12 +220,25 @@ class Cow_simulator:
             return {'error':'', 'financials':financials, 'cows':self.amount_cows, 'balance':self.amount_balance}
 
 
-    def set_config_value(self, var_name, new_value):
-        setattr(self, var_name, new_value)
-        return getattr(self, var_name)
 
-    def import_fin_module(self, fin_mod):
-        self.fin_mod = fin_mod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -282,7 +257,7 @@ class Cow_simulator:
         self.bool_financials = financials
 
     def calculate_final_cost_per_cow(self):
-        cost = self.amount_start_balance - self.end_balance
+        cost = self.amount_start_balance - self.amount_end_balance
         cost_per_cow = cost/self.amount_cows_bought_last
         return cost, cost_per_cow
 
@@ -309,7 +284,7 @@ class Cow_simulator:
         return self.financials_per_cycle
 
     def get_end_financials(self):
-        perc_IRR = (self.amount_balance / self.money_invested)*100
+        perc_IRR = (self.amount_balance / self.amount_money_invested)*100
 
         cost, cost_per_cow = self.calculate_final_cost_per_cow()
 
@@ -335,6 +310,17 @@ class Cow_simulator:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 ####REKT FUNCS: buys too many cows
 # get this run out of this obj deze func == rekt
     def run_sim_cycle_strat(self, amount_cycles, amount_of_cycles_per_year, verbose=False):
@@ -344,19 +330,19 @@ class Cow_simulator:
       if 12 % amount_of_cycles_per_year:
         return {'error': 'Impossible amount of cycles'}
 
-      self.amount_of_cycles_per_year = amount_of_cycles_per_year
+      self.n_cycles_per_year = amount_of_cycles_per_year
       #(12/length)
-      self.cycle_devider = int(amount_of_cycles_per_year/(12/self.cycle_length))
+      self.n_cycle_devider = int(amount_of_cycles_per_year/(12/self.cycle_length))
 
-      split = self.amount_balance/self.cycle_devider
+      split = self.amount_balance/self.n_cycle_devider
       self.amount_balance = []
 
       sims = []
 
-      for x in range(0, self.cycle_devider):
+      for x in range(0, self.n_cycle_devider):
         self.amount_balance.append(split)    
         new_sim = self.set_stage(self, 0, self.n_month)
-        new_sim.amount_max_capacity = self.amount_max_capacity/self.cycle_devider
+        new_sim.amount_max_capacity = self.amount_max_capacity/self.n_cycle_devider
         sims.append(new_sim)
 
 
@@ -367,7 +353,7 @@ class Cow_simulator:
       ret = {}
 
       for x in range(0, int(amount_cycles*self.cycle_length)):
-        if x % self.cycle_devider >= len(sims):
+        if x % self.n_cycle_devider >= len(sims):
             new_sim = self.set_stage(self, 0, self.n_month)
             sims.append(new_sim)
 
@@ -408,4 +394,4 @@ class Cow_simulator:
     def print_individually(self, sims):
         for x in range(0, len(sims)):
             print(sims[x])
-    
+   
