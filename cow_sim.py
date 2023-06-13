@@ -60,8 +60,7 @@ class Cow_simulator:
         
 
     def event_effect_pass_month_start(self):
-        if not self.fin_mod == type(None):
-            self.fin_mod.gather_data_begin(self)
+        
         
         return True
 
@@ -78,14 +77,13 @@ class Cow_simulator:
         rev = self.get_total_revenue_monthly()
         self.amount_balance += rev
 
-        if not self.fin_mod == type(None):
-            self.fin_mod.gather_data_mid(self)
+        #if hasattr(self, 'fin_mod'):
+        #   self.fin_mod.gather_data_mid(self)
 
         return True    
 
     def event_effect_pass_month_final(self):
-        if not self.fin_mod == type(None):
-          self.fin_mod.gather_data_end(self)        
+        return True       
 
 
     def __init__(self, amount_invested=config.money_invested):
@@ -141,7 +139,6 @@ class Cow_simulator:
         self.amount_start_balance = 0
 
         self.financials_per_cycle = []
-        self.fin_mod = type(None)
 
     #NOT REQ but REComanded
     #str implementation is usr specific, what do you want to see
@@ -152,7 +149,7 @@ class Cow_simulator:
     #REQ:
     #sims interpretation of the copy function
     def set_stage(self, org_sim, cows, amount_balance, start=0):
-        exception = {'amount_cows':cows, 'n_cycle_start':start, 'amount_balance':amount_balance, 'fin_mod':type(None)}
+        exception = {'amount_cows':cows, 'n_cycle_start':start, 'amount_balance':amount_balance}
         new_sim = org_sim.copy_self(org_sim, exception)
         #print(new_sim.fin_mod)
 
@@ -160,10 +157,10 @@ class Cow_simulator:
 
     #REQ:
     def get_sim_return_obj(self):
-        if (self.bool_financials == False) or (self.fin_mod == type(None)):
+        if (self.bool_financials == False) or not hasattr(self, 'fin_mod'):
             return {'error':'', 'cows':self.amount_cows, 'balance':self.amount_balance}
         else:
-            financials = self.fin_mod.get_financials_per_cycle(self) 
+            financials = self.fin_mod.get_financials_per_cycle() 
             return {'error':'', 'financials':financials, 'cows':self.amount_cows, 'balance':self.amount_balance}
 
 
@@ -218,58 +215,3 @@ class Cow_simulator:
     #todo
     def cost_rent():
       return 0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

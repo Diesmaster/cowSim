@@ -3,6 +3,8 @@ import config
 
 class Financial_model:
 	def __init__(self, sim):
+		self.sim = sim
+
 		#first it gets itself in order
 		self.arr_NAV = []
 		self.total_FCF = 0
@@ -17,9 +19,31 @@ class Financial_model:
 		self.percentage_own = config.percentage_own
 
 		#fix the sim
-		sim.fin_mod = self
+		self.sim.fin_mod = self
 		
+		#self.fix_data_gatthering()
 
+	def wrap_around(self, arr, logic, arr_check):
+		def test():
+			for func in arr:
+				res = func()
+
+			ret = logic()
+
+			for arr_c in arr_check:
+				res = arr_c()				
+			return ret
+
+		return test
+
+
+	def fix_data_gatthering(self):
+		self.sim.event_pass_month_start.effect = self.wrap_around([self.gather_data_start], self.sim.event_pass_month_start.effect, [])
+		self.sim.event_pass_month_middle.effect = self.wrap_around([self.gather_data_middle], self.sim.event_pass_month_start.effect, [])
+		self.sim.event_pass_month_end.effect = self.wrap_around([], self.sim.event_pass_month_start.effect, [])
+		self.sim.event_pass_month_final.effect = self.wrap_around([], self.sim.event_pass_month_start.effect, [self.gather_data_final])
+
+		return True
 
 	#util
 	def __str__(self):
@@ -60,40 +84,46 @@ class Financial_model:
 		return (((margin/100)+1)**(12/sim.cycle_length))*100
 
 
-	def get_financials_per_cycle(self, sim):
-		if sim.n_month % sim.cycle_length == sim.cycle_length-1:
-			financials = self.get_end_financials(sim)
-			sim.financials_per_cycle.append(financials)
+	def get_financials_per_cycle(self):
+		if self.sim.n_month % self.sim.cycle_length == self.sim.cycle_length-1:
+			financials = self.get_end_financials()
+			self.sim.financials_per_cycle.append(financials)
 			return financials
 		else:
 			return ''
 
-	def get_end_financials(self, sim):
-		perc_IRR = (sim.amount_balance / sim.amount_money_invested)*100
+	def get_end_financials(self):
+		print(self.sim)
 
-		cost, cost_per_cow = sim.fin_mod.calculate_final_cost_per_cow(sim)
+		perc_IRR = (self.sim.amount_balance / self.sim.amount_money_invested)*100
 
-		profit, profit_per_cow = sim.fin_mod.calculate_profit_per_cow(sim)
+		cost, cost_per_cow = self.sim.fin_mod.calculate_final_cost_per_cow(self.sim)
 
-		margin = sim.fin_mod.calculate_margin(profit_per_cow, cost_per_cow)
+		profit, profit_per_cow = self.sim.fin_mod.calculate_profit_per_cow(self.sim)
 
-		annualized_IRR = sim.fin_mod.calculate_annualized_IRR(sim, margin)
+		margin = self.sim.fin_mod.calculate_margin(profit_per_cow, cost_per_cow)
 
-		valuations = '' #get valuations later
+		annualized_IRR = self.sim.fin_mod.calculate_annualized_IRR(self.sim, margin)
+
+		valuations = ''#self.get_value_models_final()
 
 		return {"total IRR":perc_IRR, "cost_per_cycle":cost, "cost_per_cow":cost_per_cow, "profit_per_cycle":profit, "profit_per_cow":profit_per_cow, "margin":margin, "annualized_IRR":annualized_IRR, 'valuations':valuations}
 
 
 	#gather data
-	def gather_data_end(self, sim):
-		self.arr_NAV.append(self.asset_based_valuation(sim)['NAV'])
-		self.arr_EARNINGS.append(self.get_earnings(sim))
+	def gather_data_final(self):
+		self.arr_FCF.append(self.get_this_month_FCF(self.sim))
+		self.arr_NAV.append(self.asset_based_valuation(self.sim)['NAV'])
+		self.arr_EARNINGS.append(self.get_earnings(self.sim))
 
-	def gather_data_mid(self, sim):
-		self.arr_FCF.append(self.get_this_month_FCF(sim))
+	def gather_data_end(self):
+		return True
 
-	def gather_data_begin(self, sim):
-		self.arr_CFO.append(self.get_this_month_CFO(sim))
+	def gather_data_middle(self):
+		return True
+
+	def gather_data_start(self):
+		self.arr_CFO.append(self.get_this_month_CFO(self.sim))
 
 	#Discounted Cash Flow Analysis
 	def discounted_cashflow_analysis(self, discount):

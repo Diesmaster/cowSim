@@ -285,11 +285,11 @@ if not sys.argv[2]:
    print("amount of cycles should be the first argument, and missing a amount invested as second argument as array")
 
 new_sim = Cow_simulator(int(sys.argv[2]))
-std_sim = Standard_sim(new_sim)
 fin_mod = Financial_model(new_sim)
+std_sim = Standard_sim(new_sim)
 
 
 res = new_sim.run_sim(int(sys.argv[1]))
 print(res)
-#res = new_sim.get_end_financials()
-#print(res)
+res = fin_mod.get_end_financials()
+print(res)

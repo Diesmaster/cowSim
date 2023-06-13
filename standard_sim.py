@@ -31,7 +31,7 @@ def create_copy_func(obj_old, exception):
 
 	for name in dir(obj_old):
 		result = exception.get(name)
-		if not name[:2] == "__" and not name[:5] == "event" and not name[:5] == "price":
+		if not name[:2] == "__" and not name[:5] == "event" and not name[:5] == "price" and not name[:7] == "fin_mod":
 			if not result ==  None:
 				if not result == '': 
 					setattr(new_obj, name, result)
