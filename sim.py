@@ -285,37 +285,11 @@ if not sys.argv[2]:
    print("amount of cycles should be the first argument, and missing a amount invested as second argument as array")
 
 new_sim = Cow_simulator(int(sys.argv[2]))
-fin_mod = Financial_model()
 std_sim = Standard_sim(new_sim)
-#new_price = Price_model(config.price_per_kg_normal, exceptions={'6':60000}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
-#print(new_price)
-
-#print(new_sim.test)
+fin_mod = Financial_model(new_sim)
 
 
-
-#new_sim.import_fin_module(fin_mod)
-
-
-res = new_sim.run_sim(int(sys.argv[1]))#, test_con(new_sim), test_func(new_sim))
-#res = new_sim.get_end_financials()
-#res = fin_mod.get_personal_financials() 
+res = new_sim.run_sim(int(sys.argv[1]))
 print(res)
-#print(new_sim)
-#print("n_month: " + str(new_sim.n_month) + " price kg: " + str(new_sim.price_per_kg_normal) + " price concen: " + str(new_sim.price_of_concentraat) + " price cow: " + str(new_sim.price_per_cow_250kg) + " price grass: " + str(new_sim.price_of_grass) + " price fermented poop " + str(new_sim.price_fermented_poop) )
-#print("cows last bought: " + str(new_sim.amount_cows_bought_last))
-#print("start: " + str(new_sim.amount_start_balance ))
-#print("end: " + str(new_sim.amount_end_balance ))
-
-
-
-#filter_list = ['cycle_length', 'percentage_poop_dry', 'percentage_poop_fermented_weight_decrease', 'percentage_of_dry_matter_concentraat', 'percentage_of_concentraat_dry', 'percentage_of_dry_matter_grass', 'percentage_of_grass_dry', 'my_share_low', 'my_share_high', 'percentage_of_dry_matter', 'money_invested', 'cattle_bought_at_kg', 'bool_financials']
-
-#res = all_vars_analysis(2, 50, 200, 2, 150000000, filter_list, False)
-
-#list_wants = ['margin', 'total IRR', 'value']
-
-#res = res_to_data(res, list_wants)
-
-
-#print( dict_to_csv_parser([res]) )
+#res = new_sim.get_end_financials()
+#print(res)

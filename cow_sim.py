@@ -11,6 +11,8 @@ import standard_sim
 
 # todo
 # fix the finance module
+# automate start and end balance
+
 
 class Cow_simulator:
 
@@ -58,7 +60,7 @@ class Cow_simulator:
         
 
     def event_effect_pass_month_start(self):
-        if not self.fin_mod == None:
+        if not self.fin_mod == type(None):
             self.fin_mod.gather_data_begin(self)
         
         return True
@@ -76,16 +78,16 @@ class Cow_simulator:
         rev = self.get_total_revenue_monthly()
         self.amount_balance += rev
 
-        if not self.fin_mod == None:
+        if not self.fin_mod == type(None):
             self.fin_mod.gather_data_mid(self)
 
         return True    
 
     def event_effect_pass_month_final(self):
-        if not self.fin_mod == None:
+        if not self.fin_mod == type(None):
           self.fin_mod.gather_data_end(self)        
 
-###todo fix config load
+
     def __init__(self, amount_invested=config.money_invested):
         ##need in here bc cannot be put in here before init function is called
         standard_sim.load_config(self, 'cow_sim_config')
@@ -130,12 +132,16 @@ class Cow_simulator:
         
         #finance vars
         self.amount_money_invested = amount_invested
-        self.amount_start_balance = 0;
-        self.amount_cows_bought_last = 0;
+        self.amount_cows_bought_last = 0
+
+        #left over at the end of the cycle before you sell the main farm object
         self.amount_end_balance = 0
 
+        #money at the start of the cycle
+        self.amount_start_balance = 0
+
         self.financials_per_cycle = []
-        self.fin_mod = None
+        self.fin_mod = type(None)
 
     #NOT REQ but REComanded
     #str implementation is usr specific, what do you want to see
@@ -146,18 +152,18 @@ class Cow_simulator:
     #REQ:
     #sims interpretation of the copy function
     def set_stage(self, org_sim, cows, amount_balance, start=0):
-        exception = {'amount_cows':cows, 'n_cycle_start':start, 'amount_balance':amount_balance}
+        exception = {'amount_cows':cows, 'n_cycle_start':start, 'amount_balance':amount_balance, 'fin_mod':type(None)}
         new_sim = org_sim.copy_self(org_sim, exception)
-
+        #print(new_sim.fin_mod)
 
         return new_sim
 
     #REQ:
     def get_sim_return_obj(self):
-        if self.bool_financials == False:
+        if (self.bool_financials == False) or (self.fin_mod == type(None)):
             return {'error':'', 'cows':self.amount_cows, 'balance':self.amount_balance}
         else:
-            financials = self.get_financials_per_cycle() 
+            financials = self.fin_mod.get_financials_per_cycle(self) 
             return {'error':'', 'financials':financials, 'cows':self.amount_cows, 'balance':self.amount_balance}
 
 
@@ -165,7 +171,7 @@ class Cow_simulator:
     ##  to get a total cost montly and a total rev montly
     ##  then there there is a auto created get profit function
 
-    #def calculations costs takes in n_cows
+
     def calculate_cow_buy_cost(self):
         return self.amount_cows_to_buy * float(self.price_per_cow_250kg)
 
@@ -213,7 +219,6 @@ class Cow_simulator:
     def cost_rent():
       return 0
 
-    #util funcs
 
 
 
@@ -240,57 +245,13 @@ class Cow_simulator:
 
 
 
-    ### financials TODO move all to financial lib
-    def import_fin_module(self, fin_mod):
-        self.fin_mod = fin_mod
 
-    def set_financials(self, financials=False):
-        self.bool_financials = financials
 
-    def calculate_final_cost_per_cow(self):
-        cost = self.amount_start_balance - self.amount_end_balance
-        cost_per_cow = cost/self.amount_cows_bought_last
-        return cost, cost_per_cow
 
-    def calculate_profit_per_cow(self):
-        profit = self.amount_balance - self.amount_start_balance
-        profit_per_cow = profit / self.amount_cows_bought_last
-        return profit, profit_per_cow
 
-    def calculate_margin(self, profit_per_cow, cost_per_cow):
-        return (profit_per_cow/cost_per_cow)*100
 
-    def calculate_annualized_IRR(self, margin):
-        return (((margin/100)+1)**(12/self.cycle_length))*100
 
-    def get_financials_per_cycle(self):
-        if self.n_month % self.cycle_length == self.cycle_length-1:
-            financials = self.get_end_financials()
-            self.financials_per_cycle.append(financials)
-            return financials
-        else:
-            return ''
 
-    def get_financials(self):
-        return self.financials_per_cycle
-
-    def get_end_financials(self):
-        perc_IRR = (self.amount_balance / self.amount_money_invested)*100
-
-        cost, cost_per_cow = self.calculate_final_cost_per_cow()
-
-        profit, profit_per_cow = self.calculate_profit_per_cow()
-
-        margin = self.calculate_margin(profit_per_cow, cost_per_cow)
-
-        annualized_IRR = self.calculate_annualized_IRR(margin)
-
-        valuations = ''
-        if not type(self.fin_mod) == type(None):
-            valuations = self.fin_mod.get_value_models_final()
-        
-        
-        return {"total IRR":perc_IRR, "cost_per_cycle":cost, "cost_per_cow":cost_per_cow, "profit_per_cycle":profit, "profit_per_cow":profit_per_cow, "margin":margin, "annualized_IRR":annualized_IRR, 'valuations':valuations}
 
 
 

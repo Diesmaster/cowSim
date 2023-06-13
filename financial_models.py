@@ -2,7 +2,8 @@ import math
 import config
 
 class Financial_model:
-	def __init__(self):
+	def __init__(self, sim):
+		#first it gets itself in order
 		self.arr_NAV = []
 		self.total_FCF = 0
 		self.total_CFO = 0
@@ -15,6 +16,11 @@ class Financial_model:
 		#personal finance consts:
 		self.percentage_own = config.percentage_own
 
+		#fix the sim
+		sim.fin_mod = self
+		
+
+
 	#util
 	def __str__(self):
 		arr_vars = [var_name for var_name in dir(self) if var_name.startswith("arr_")]
@@ -26,14 +32,58 @@ class Financial_model:
 
 	def sum_array_until(self, arr, index):
 		sum_arr = 0
+
 		if len(arr) < index:
 			index = len(arr)
 
 		for x in range(0, index):
 			sum_arr += arr[x]
+			#print(sum_arr)
 
 		return sum_arr
+
+	#place in diffent obj
+	def calculate_final_cost_per_cow(self, sim):
+		cost = sim.amount_start_balance - sim.amount_end_balance
+		cost_per_cow = cost/sim.amount_cows_bought_last
+		return cost, cost_per_cow
+
+	def calculate_profit_per_cow(self, sim):
+		profit = sim.amount_balance - sim.amount_start_balance
+		profit_per_cow = profit / sim.amount_cows_bought_last
+		return profit, profit_per_cow
 	
+	def calculate_margin(self, profit_per_cow, cost_per_cow):
+		return (profit_per_cow/cost_per_cow)*100
+
+	def calculate_annualized_IRR(self, sim, margin):
+		return (((margin/100)+1)**(12/sim.cycle_length))*100
+
+
+	def get_financials_per_cycle(self, sim):
+		if sim.n_month % sim.cycle_length == sim.cycle_length-1:
+			financials = self.get_end_financials(sim)
+			sim.financials_per_cycle.append(financials)
+			return financials
+		else:
+			return ''
+
+	def get_end_financials(self, sim):
+		perc_IRR = (sim.amount_balance / sim.amount_money_invested)*100
+
+		cost, cost_per_cow = sim.fin_mod.calculate_final_cost_per_cow(sim)
+
+		profit, profit_per_cow = sim.fin_mod.calculate_profit_per_cow(sim)
+
+		margin = sim.fin_mod.calculate_margin(profit_per_cow, cost_per_cow)
+
+		annualized_IRR = sim.fin_mod.calculate_annualized_IRR(sim, margin)
+
+		valuations = '' #get valuations later
+
+		return {"total IRR":perc_IRR, "cost_per_cycle":cost, "cost_per_cow":cost_per_cow, "profit_per_cycle":profit, "profit_per_cow":profit_per_cow, "margin":margin, "annualized_IRR":annualized_IRR, 'valuations':valuations}
+
+
 	#gather data
 	def gather_data_end(self, sim):
 		self.arr_NAV.append(self.asset_based_valuation(sim)['NAV'])
@@ -125,7 +175,7 @@ class Financial_model:
 
 	#Asset-Based Valuation
 	def asset_based_valuation(self, sim):
-		NAV = sim.amount_balance + (sim.amount_cow_weight * sim.get_price_of_meat(sim.n_month))
+		NAV = sim.amount_balance + (sim.amount_cow_weight * float(sim.price_per_kg_normal))
 		return {'NAV':NAV}
 
 	def get_NAV(self):
@@ -138,10 +188,15 @@ class Financial_model:
 		return {**NAV, **EMA, **DCF}
 
 	def get_value_models_final(self, multiple=1.2, one_year_discount_amount=6.5):
+		NAV = {}
 		NAV = self.get_NAV()
 		NAV['NAV'] = NAV['NAV'][len(NAV['NAV'])-1]
+
+		EMA = {}
 		EMA = self.earnings_multiple_analysis(multiple)
 		EMA['EMA'] = EMA['EMA'][len(EMA['EMA'])-1]
+		
+		DCF = {}
 		DCF = self.discounted_cashflow_analysis(one_year_discount_amount)
 		DCF['FCF'] = DCF['FCF'][len(DCF['FCF'])-1]
 		DCF['CFO'] = DCF['CFO'][len(DCF['CFO'])-1] 

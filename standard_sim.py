@@ -28,6 +28,7 @@ def create_sum_of_func(obj, func_array):
 def create_copy_func(obj_old, exception): 
 	new_obj = type(obj_old)()
 
+
 	for name in dir(obj_old):
 		result = exception.get(name)
 		if not name[:2] == "__" and not name[:5] == "event" and not name[:5] == "price":
