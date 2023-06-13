@@ -47,6 +47,15 @@ class Cow_simulator:
         self.amount_cow_weight = 0
         self.amount_cows = 0
 
+    def event_condition_change_feed(self):
+        if (self.amount_cows > 100) and (self.price_of_concentraat_if_gt_100_decrease > 0):
+            return True
+        return False
+
+    def event_effect_change_feed(self):
+        self.price_of_concentraat = Price_model(float(self.price_of_concentraat)*self.price_of_concentraat_if_gt_100_decrease, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_of_concentraat_if_gt_100_decrease = -1
+
     def event_effect_pass_month_start(self):
         if not self.fin_mod == None:
             self.fin_mod.gather_data_begin(self)
@@ -82,42 +91,48 @@ class Cow_simulator:
 
 ###todo fix config load
     def __init__(self, amount_invested=config.money_invested):
-        self.price_per_kg_normal = config.price_per_kg_normal#Price_model(config.price_per_kg_normal, exceptions={'6':config.price_per_kg_eid_increase}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        ### prices
+        self.price_per_kg_normal = Price_model(config.price_per_kg_normal, exceptions={'6':config.price_per_kg_eid_increase}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_of_concentraat = Price_model(config.price_of_concentraat, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_per_cow_250kg = Price_model(config.price_per_cow_250kg, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_of_grass = Price_model(config.price_of_grass, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_fermented_poop = Price_model(config.price_fermented_poop, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+
+        #events
+        self.event_month_middle_buy_cows = Event_sim(self.event_condition_buy_cows, self.event_effect_buy_cows)
+        self.event_month_final_sell_cows = Event_sim(self.event_condition_sell_cows, self.event_effect_sell_cows)
+        self.event_month_end_change_feed = Event_sim(self.event_condition_change_feed, self.event_effect_sell_cows)
+        self.event_pass_month_start = Event_sim(None, self.event_effect_pass_month_start)
+        self.event_pass_month_middle = Event_sim(None, self.event_effect_pass_month_middle)
+        self.event_pass_month_end = Event_sim(None, self.event_effect_pass_month_end)
+        self.event_pass_month_final = Event_sim(None, self.event_effect_pass_month_final)
+
+
+        #config consts
         self.my_share_low = config.my_share_low
-        self.percentage_of_dry_matter = config.percentage_of_dry_matter
-        self.price_per_kg_eid_increase = config.price_per_kg_eid_increase
         self.my_share_high = config.my_share_high
-        self.price_of_concentraat = config.price_of_concentraat
         self.price_of_concentraat_if_gt_100_decrease = config.price_of_concentraat_if_gt_100_decrease
-        self.price_per_cow_250kg = config.price_per_cow_250kg
-        self.price_of_grass = config.price_of_grass
         self.monthly_targeted_adg_kg_per_cattle = config.monthly_targeted_adg_kg_per_cattle
         self.cost_of_farmhand = config.cost_of_farmhand
         self.cattle_bought_at_kg = config.cattle_bought_at_kg
         self.cost_of_security_guard = config.cost_of_security_guard
         self.money_invested = amount_invested
         self.cycle_length = config.cycle_length
-        self.fermented_poop_price = config.fermented_poop_price
+        self.percentage_of_dry_matter = config.percentage_of_dry_matter
         self.percentage_poop_dry = config.percentage_poop_dry
         self.percentage_poop_fermented_weight_decrease = config.percentage_poop_fermented_weight_decrease
         self.percentage_of_dry_matter_concentraat = config.percentage_of_dry_matter_concentraat
         self.percentage_of_concentraat_dry = config.percentage_of_concentraat_dry
         self.percentage_of_dry_matter_grass = config.percentage_of_dry_matter_grass
         self.percentage_of_grass_dry = config.percentage_of_grass_dry
+
         self.amount_max_capacity = config.amount_max_capacity
         self.amount_change_to_cycle_strat = config.amount_change_to_cycle_strat
+
         self.bool_financials = config.bool_financials
         self.percentage_own = config.percentage_own
         self.fin_mod = None
 
-        self.event_month_middle_buy_cows = Event_sim(self.event_condition_buy_cows, self.event_effect_buy_cows)
-        self.event_month_final_sell_cows = Event_sim(self.event_condition_sell_cows, self.event_effect_sell_cows)
-
-        self.event_pass_month_start = Event_sim(None, self.event_effect_pass_month_start)
-        self.event_pass_month_middle = Event_sim(None, self.event_effect_pass_month_middle)
-        self.event_pass_month_end = Event_sim(None, self.event_effect_pass_month_end)
-        #this one is to add an independed event as last one, otherwise all independed events will come first
-        self.event_pass_month_final = Event_sim(None, self.event_effect_pass_month_final)
 
         #objt vars
         self.n_month = 0
@@ -135,10 +150,6 @@ class Cow_simulator:
         self.amount_cows_bought_last = 0;
         self.end_balance = 0
         self.financials_per_cycle = []
-
-
-        #if self.amount_balance > 150000000:
-        #    print(self)
 
 
     def __str__(self):
@@ -183,28 +194,10 @@ class Cow_simulator:
 
         return new_sim
 
-###todo fix pricing funcs
-    def get_price_of_meat(self, month):
-        #check eid ul adha
-        if type(self.price_per_kg_normal) == type(1):
-            if month == 5:
-                return self.price_per_kg_normal * ((self.price_per_kg_eid_increase/100)+1)
-            else:
-                return self.price_per_kg_normal #.get_price()
-        else:
-            return self.price_per_kg_normal.get_price()
-
-    def get_price_of_concentraat(self, n_cows):
-        if self.amount_cows > 100:
-            return ( (100 - self.price_of_concentraat_if_gt_100_decrease) /100)*self.price_of_concentraat
-        else:
-            return self.price_of_concentraat
-
-
 
     #def calculations costs takes in n_cows
     def calculate_cow_buy_cost(self, n_cows):
-        return n_cows * self.price_per_cow_250kg
+        return n_cows * float(self.price_per_cow_250kg)
 
     def amount_of_dry_feed_needed_daily_sim(self):
       return self.amount_cow_weight * (self.percentage_of_dry_matter / 100)
@@ -216,7 +209,7 @@ class Cow_simulator:
       return self.amount_of_dry_feed_needed_daily_sim() * (self.percentage_of_dry_matter_grass / 100) * (100 / self.percentage_of_grass_dry) * 30
 
     def get_cost_montly_cow_feed_sim(self):
-        return self.amount_of_concentrate_needed_cycle_sim() * self.get_price_of_concentraat(self.amount_cows) + self.amount_of_grass_needed_cycle_sim() * self.price_of_grass
+        return self.amount_of_concentrate_needed_cycle_sim() * float(self.price_of_concentraat) + self.amount_of_grass_needed_cycle_sim() * float(self.price_of_grass)
   
     def calculate_farm_hand_sim(self):
       return math.ceil(self.amount_cows / 25) * self.cost_of_farmhand
@@ -244,10 +237,10 @@ class Cow_simulator:
       return self.calculate_amount_wet_poop_sim() * (self.percentage_poop_fermented_weight_decrease / 100)
 
     def get_revenue_montly_poop_revenue_sim(self):
-      return self.calculate_amount_fermented_poop_sim() * self.fermented_poop_price * 30
+      return self.calculate_amount_fermented_poop_sim() * float(self.price_fermented_poop) * 30
 
     def calculate_cow_revenue_sim(self):
-      return self.get_price_of_meat(self.n_month % 12)*self.amount_cow_weight
+      return float(self.price_per_kg_normal)*self.amount_cow_weight
 
     #todo
     def cost_rent():

@@ -5,6 +5,7 @@
 from functools import reduce
 import types
 import datetime
+from price import Price_model
 
 #util funcs
 def get_funcs_with_filter(obj, str_filter):
@@ -125,6 +126,18 @@ class Standard_sim:
 
 		return run_sim
 
+	def get_update_prices_funct(self):
+		arr = get_attr_with_filter(self.sim, 'price_')
+		
+		def push_month_prices(sim):
+			for obj in arr:
+				if isinstance(obj, Price_model):
+					obj.push_month()
+
+		return push_month_prices
+
+
+
 	def make_pass_month(self):
 		#creation of pass month automatically
 		#takes in the std logic and looks for all events that need checking in that period
@@ -135,7 +148,9 @@ class Standard_sim:
 
 		self.sim.event_pass_month_start.effect = self.wrap_around(event_pass_month_start_funcs, self.sim.event_pass_month_start.effect, self.sim.check_sanity)
 		self.sim.event_pass_month_middle.effect = self.wrap_around(event_pass_month_middle_funcs, self.sim.event_pass_month_middle.effect, self.sim.check_sanity)
-		self.sim.event_pass_month_end.effect = self.wrap_around(event_pass_month_end_funcs, self.sim.event_pass_month_end.effect, self.sim.check_sanity)
+		#update prices funct
+		pric_update_func = self.get_update_prices_funct()
+		self.sim.event_pass_month_end.effect = self.wrap_around(event_pass_month_end_funcs, self.sim.event_pass_month_end.effect, pric_update_func)
 		self.sim.event_pass_month_final.effect = self.wrap_around(event_pass_month_final_funcs, self.sim.event_pass_month_final.effect, self.sim.check_sanity)
 
 		month_arr = [self.sim.event_pass_month_start.effect, self.sim.event_pass_month_middle.effect, self.sim.event_pass_month_end.effect, self.sim.event_pass_month_final.effect]

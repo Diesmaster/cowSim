@@ -20,6 +20,12 @@ class Price_model:
 			self.distribution = distribution
 			self.complex_price = True
 
+	def __int__(self):
+		return int(self.get_price())
+
+	def __float__(self):
+		return float(self.get_price())
+
 	def __mul__(self, other):
 		if isinstance(other, int) or isinstance(other, float):
 			return self.get_price() * other
