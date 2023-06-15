@@ -140,9 +140,6 @@ class Standard_sim:
 					
 					print(self.sim)
 					return res
-				#if self.bool_financials == True:
-				#    if not res['financials'] == '':
-				#        print(res)
 
 			if verbose == True:  
 				print(self)

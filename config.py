@@ -33,8 +33,10 @@ class cow_sim_config:
 	percentage_poop_dry = 25
 	percentage_poop_fermented_weight_decrease = 50
 	
+	#fin cons
 	bool_financials = True
 	money_invested = 150000000
+	safety_margin = 10
 
 #finance config
 class fin_mod_config:

@@ -26,7 +26,7 @@ class Cow_simulator:
         amount_used = self.amount_balance
         
         if self.amount_asset_cows.to == 0:
-            self.amount_asset_cows.to = self.max_var_all_else_equal("amount_asset_cows", int(self.amount_asset_cows.last*0.9), self.amount_max_capacity)
+            self.amount_asset_cows.to = self.max_var_all_else_equal("amount_asset_cows", int(self.amount_asset_cows.last*((100-self.safety_margin)/100)), self.amount_max_capacity)
         
         cost = self.calculate_cow_buy_cost()
         self.amount_balance -= cost
@@ -85,23 +85,23 @@ class Cow_simulator:
         ##need in here bc cannot be put in here before init function is called
         standard_sim.load_config(self, 'cow_sim_config')
 
-        ### prices you need to call them prices_ at the start
+        # prices you need to call them prices_ at the start
         self.price_per_kg_normal = Price_model(self.price_per_kg_normal, exceptions={'6':self.price_per_kg_eid}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.price_of_concentraat = Price_model(self.price_of_concentraat, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.price_per_cow_250kg = Price_model(self.price_per_cow_250kg, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.price_of_grass = Price_model(self.price_of_grass, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.price_fermented_poop = Price_model(self.price_fermented_poop, max_up=1, max_down=1, distribution='normal', n_per_year=12)
 
-        #events you need to call them month start/middle/end/final so the program knows where to put it
+        # events you need to call them month start/middle/end/final so the program knows where to put it
         self.event_month_middle_buy_cows = Event_sim(self.event_condition_buy_cows, self.event_effect_buy_cows)
         self.event_month_final_sell_cows = Event_sim(self.event_condition_sell_cows, self.event_effect_sell_cows)
         self.event_month_end_change_feed = Event_sim(self.event_condition_change_feed, self.event_effect_change_feed)
         
-        ## std boiler plate, here you can define logic that happens every month in the specified time period 
-        self.event_pass_month_start = Event_sim(None, self.event_effect_pass_month_start)
-        self.event_pass_month_middle = Event_sim(None, self.event_effect_pass_month_middle)
-        self.event_pass_month_end = Event_sim(None, self.event_effect_pass_month_end)
-        self.event_pass_month_final = Event_sim(None, self.event_effect_pass_month_final)
+        # std boiler plate, here you can define logic that happens every month in the specified time period 
+        self.event_pass_month_start = Event_sim(None, self.event_effect_pass_month_start) #REQ
+        self.event_pass_month_middle = Event_sim(None, self.event_effect_pass_month_middle) #REQ
+        self.event_pass_month_end = Event_sim(None, self.event_effect_pass_month_end) #REQ
+        self.event_pass_month_final = Event_sim(None, self.event_effect_pass_month_final) #REQ
 
         # objt vars
         # 2 types of std var names n and amount
@@ -126,32 +126,32 @@ class Cow_simulator:
         # financial functions will automatically be created as soon as the program detacts an asset 
         self.amount_asset_cows = Asset()
         
-        #finance vars
+        # finance vars
         self.amount_money_invested = amount_invested
 
-        #left over at the end of the cycle before you sell the main farm object
-        self.amount_end_balance = 0
+        # left over at the end of the cycle before you sell the main farm object
+        self.amount_end_balance = 0 #REQ
 
-        #money at the start of the cycle
-        self.amount_start_balance = 0
+        # money at the start of the cycle
+        self.amount_start_balance = 0 #REQ
 
         self.financials_per_cycle = []
 
-    #NOT REQ but REComanded
-    #str implementation is usr specific, what do you want to see
+    # NOT REQ but REComanded
+    # str implementation is usr specific, what do you want to see
     def __str__(self):
        string = "Month: " + str(self.n_month) + ", Total Cow Weight: " + str(self.amount_cow_weight) + ", Amount of Cows: " + str(self.amount_asset_cows.amount) + ", Balance: " + str(self.amount_balance) 
        return string
 
-    #REQ:
-    #sims interpretation of the copy function
+    # REQ:
+    # sims interpretation of the copy function
     def set_stage(self, org_sim, cows, amount_balance, start=0):
         exception = {'amount_asset_cows':cows, 'n_cycle_start':start, 'amount_balance':amount_balance}
         new_sim = org_sim.copy_self(org_sim, exception)
 
         return new_sim
 
-    #REQ:
+    # REQ:
     def get_sim_return_obj(self):
         if (self.bool_financials == False) or not hasattr(self, 'fin_mod'):
             return {'error':'', 'cows':self.amount_asset_cows.amount, 'balance':self.amount_balance}
@@ -208,6 +208,6 @@ class Cow_simulator:
     def calculate_cow_revenue_sim(self):
       return float(self.price_per_kg_normal)*self.amount_cow_weight
 
-    #todo
+    # todo
     def cost_rent():
       return 0
