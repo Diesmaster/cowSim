@@ -273,24 +273,3 @@ class Standard_sim:
 			return res
 
 		return test
-
-
-		# init
-		# name stuff
-		# return init
-
-
-
-
-		# This object will assume the provided sim has properties
-		# n_month
-		# amount_balance
-		# cycle_length
-		# amount_cycles
-		# money_invested
-    
-
-		# This object will assume the provided sim has functions
-		# Pass/push month
-		# 
-		#self.get_cost_monthly_fucslambda obj_new, obj_old: setattr(obj_new, name, getattr(obj_old, name))

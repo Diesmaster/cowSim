@@ -9,10 +9,6 @@ class cow_sim_config:
 	price_per_kg_eid = 6000
 	price_of_concentraat_if_gt_100_decrease = 10
 
-	#fin cons
-	my_share_low = 60.00
-	my_share_high = 70.00
-
 	#cattle cons
 	monthly_targeted_adg_kg_per_cattle = 30
 	cattle_bought_at_kg = 250
@@ -38,7 +34,9 @@ class cow_sim_config:
 	percentage_poop_fermented_weight_decrease = 50
 	
 	bool_financials = True
+	money_invested = 150000000
 
 #finance config
-percentage_own = 60
-money_invested = 150000000
+class fin_mod_config:
+	percentage_own = 60
+

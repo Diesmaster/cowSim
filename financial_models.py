@@ -14,10 +14,10 @@ class Financial_model:
 		self.arr_CFO = []
 		self.last_CFO = 0;
 		self.arr_EARNINGS = []
-		self.money_invested = config.money_invested
+		self.money_invested = self.sim.amount_money_invested
 
 		#personal finance consts:
-		self.percentage_own = config.percentage_own
+		self.percentage_own = config.fin_mod_config.percentage_own
 
 		#fix the sim
 		self.sim.fin_mod = self

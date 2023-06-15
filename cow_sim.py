@@ -9,6 +9,10 @@ from events_sim import Event_sim
 from asset import Asset
 import standard_sim
 
+# todo:
+# get the funcs in sim.py out of sim.py into std sim
+# 
+
 
 class Cow_simulator:
 
@@ -77,7 +81,7 @@ class Cow_simulator:
         return True       
 
 
-    def __init__(self, amount_invested=config.money_invested):
+    def __init__(self, amount_invested=config.cow_sim_config.money_invested):
         ##need in here bc cannot be put in here before init function is called
         standard_sim.load_config(self, 'cow_sim_config')
 
