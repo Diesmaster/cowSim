@@ -8,6 +8,7 @@ import types
 import config
 
 from price import Price_model
+from asset import Asset
 
 #util funcs
 def get_funcs_with_filter(obj, str_filter):
@@ -31,7 +32,7 @@ def create_copy_func(obj_old, exception):
 
 	for name in dir(obj_old):
 		result = exception.get(name)
-		if not name[:2] == "__" and not name[:5] == "event" and not name[:5] == "price" and not name[:7] == "fin_mod":
+		if not name[:2] == "__" and not name[:5] == "event" and not name[:5] == "price" and not name[:7] == "fin_mod" and not name[:13] == "amount_asset_":
 			if not result ==  None:
 				if not result == '': 
 					setattr(new_obj, name, result)
@@ -41,7 +42,10 @@ def create_copy_func(obj_old, exception):
 				#setattr(new_obj, name, value) 
 			else:
 				value = getattr(obj_old, name)
-				setattr(new_obj, name, value) 
+				setattr(new_obj, name, value)
+		elif name[:13] == "amount_asset_":
+			asset_obj = getattr(obj_old, name)
+			setattr(new_obj, name, Asset(asset_obj.amount, asset_obj.last, asset_obj.to))
 	    	
 	Standard_sim(new_obj)
 	return new_obj
@@ -58,7 +62,11 @@ def copy_when_prefix(obj, other, prefix):
 	for pre in prefix:
 		for name in dir(other):
 			if name[:len(pre)] == pre:
-				setattr(self, name, getattr(other, name))
+				if name[: (len(pre) + len("asset_"))] == (pre + "asset_"):
+					amount_asset = getattr(other, name)
+					setattr(self, name, Asset(amount_asset.amount, amount_asset.last, amount_asset.to))
+				else:
+					setattr(self, name, getattr(other, name))
 
 def add_when_prefix(obj, other, prefix):
 	for pre in prefix:
@@ -112,8 +120,6 @@ class Standard_sim:
 			ret = []
 
 			for x in range(0, int(amount_cycles*self.sim.cycle_length)):
-				if self.sim.amount_cows == 0:
-					test = self.sim.amount_balance
 				
 				if (not change_con == None) and (not change_func == None):
 					if change_con() == True:
@@ -220,7 +226,12 @@ class Standard_sim:
 
 				#create a new sim
 				new_sim = self.sim.set_stage(self.sim, 0, self.sim.amount_balance*((100-self.sim.n_buffer)/100), self.sim.n_cycle_start)
-				setattr(new_sim, name, n_start)
+				if name[:13] == "amount_asset_":
+					asset_obj = getattr(self.sim, name)
+					setattr(new_sim, name, Asset(asset_obj.amount, asset_obj.last, n_start))
+				
+				else:		
+					setattr(new_sim, name, n_start)
 
 				#loop forward for 1 cycle
 				for x in range(0, int(self.sim.cycle_length)):

@@ -291,5 +291,5 @@ std_sim = Standard_sim(new_sim)
 
 res = new_sim.run_sim(int(sys.argv[1]))
 print(res)
-res = fin_mod.get_end_financials()
-print(res)
+#res = fin_mod.get_end_financials()
+#print(res)

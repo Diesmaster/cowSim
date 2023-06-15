@@ -1,5 +1,6 @@
 import math
 import config
+import standard_sim
 
 class Financial_model:
 	def __init__(self, sim):
@@ -23,6 +24,11 @@ class Financial_model:
 		
 		self.fix_data_gatthering()
 
+		#self.get_assets()
+
+		self.sim.asset_finance_funcs = self.get_calculate_cost_per_asset()
+
+
 	def wrap_around(self, arr, logic, arr_check):
 		def test():
 			for func in arr:
@@ -39,8 +45,8 @@ class Financial_model:
 
 	def fix_data_gatthering(self):
 		self.sim.event_pass_month_start.effect = self.wrap_around([self.gather_data_start], self.sim.event_pass_month_start.effect, [])
-		self.sim.event_pass_month_middle.effect = self.wrap_around([], self.sim.event_pass_month_middle.effect, [])
-		self.sim.event_pass_month_end.effect = self.wrap_around([], self.sim.event_pass_month_end.effect, [])
+		self.sim.event_pass_month_middle.effect = self.wrap_around([self.gather_data_middle], self.sim.event_pass_month_middle.effect, [])
+		self.sim.event_pass_month_end.effect = self.wrap_around([self.gather_data_end], self.sim.event_pass_month_end.effect, [])
 		self.sim.event_pass_month_final.effect = self.wrap_around([], self.sim.event_pass_month_final.effect, [self.gather_data_final])
 
 		return True
@@ -66,23 +72,43 @@ class Financial_model:
 
 		return sum_arr
 
-	#place in diffent obj
-	def calculate_final_cost_per_cow(self, sim):
-		cost = sim.amount_start_balance - sim.amount_end_balance
-		cost_per_cow = cost/sim.amount_cows_bought_last
-		return cost, cost_per_cow
+	def get_assets(self):
+		#res = standard_sim.get_attr_with_filter(self.sim, 'amount_asset')
+		res  = []
+		str_filter = 'amount_asset'
+		for name in dir(self.sim): 
+			if name[:len(str_filter)] == str_filter:
+				res.append(name)
 
-	def calculate_profit_per_cow(self, sim):
-		profit = sim.amount_balance - sim.amount_start_balance
-		profit_per_cow = profit / sim.amount_cows_bought_last
-		return profit, profit_per_cow
-	
-	def calculate_margin(self, profit_per_cow, cost_per_cow):
-		return (profit_per_cow/cost_per_cow)*100
+		return res
 
-	def calculate_annualized_IRR(self, sim, margin):
-		return (((margin/100)+1)**(12/sim.cycle_length))*100
+	#start stdized funcs
 
+	def get_calculate_cost_per_asset(self):
+		assets = self.get_assets()
+		func = []
+
+		for asset in assets:
+			def calculate_cost_asset():
+				asset_name = asset
+				asset_obj = getattr(self.sim, asset_name)
+				#cost
+				cost = self.sim.amount_start_balance - self.sim.amount_end_balance
+				cost_per_asset = cost / asset_obj.last
+
+				#profit
+				profit = self.sim.amount_balance - self.sim.amount_start_balance
+				profit_per_asset = profit / asset_obj.last
+
+				#margin
+				margin_per_asset = (profit_per_asset/cost_per_asset)*100
+				annualized_IRR_per_asset = (((margin_per_asset/100)+1)**(12/self.sim.cycle_length))*100
+
+				return { 'cost_total_' + asset_name:cost, 'cost_per_'+ asset_name:cost_per_asset, 'profit_total_'+ asset_name:profit, 'profit_per_'+ asset_name:profit_per_asset, 'margin_'+ asset_name:margin_per_asset, 'annualized_IRR_'+ asset_name:annualized_IRR_per_asset }
+
+			func.append(calculate_cost_asset)
+
+		return func
 
 	def get_financials_per_cycle(self):
 		if self.sim.n_month % self.sim.cycle_length == self.sim.cycle_length-1:
@@ -93,21 +119,14 @@ class Financial_model:
 			return ''
 
 	def get_end_financials(self):
-		print(self.sim)
+		ret = { 'assets':[]}
+		for func in self.sim.asset_finance_funcs:
+			res = func()
+			ret['assets'].append(res)
 
-		perc_IRR = (self.sim.amount_balance / self.sim.amount_money_invested)*100
+		ret['valuations'] = self.get_value_models_final()
 
-		cost, cost_per_cow = self.sim.fin_mod.calculate_final_cost_per_cow(self.sim)
-
-		profit, profit_per_cow = self.sim.fin_mod.calculate_profit_per_cow(self.sim)
-
-		margin = self.sim.fin_mod.calculate_margin(profit_per_cow, cost_per_cow)
-
-		annualized_IRR = self.sim.fin_mod.calculate_annualized_IRR(self.sim, margin)
-
-		valuations = ''#self.get_value_models_final()
-
-		return {"total IRR":perc_IRR, "cost_per_cycle":cost, "cost_per_cow":cost_per_cow, "profit_per_cycle":profit, "profit_per_cow":profit_per_cow, "margin":margin, "annualized_IRR":annualized_IRR, 'valuations':valuations}
+		return ret
 
 
 	#gather data
