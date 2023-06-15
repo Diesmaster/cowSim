@@ -72,7 +72,12 @@ def add_when_prefix(obj, other, prefix):
 	for pre in prefix:
 		for name in dir(other):
 			if name[:len(pre)] == pre:
-				setattr(self, name, getattr(other, name)+getattr(self, name))
+				if name[: (len(pre) + len("asset_"))] == (pre + "asset_"):
+					amount_asset = getattr(other, name)
+					obj_asset = getattr(obj, name)
+					setattr(obj, name, Asset(amount_asset.amount + obj_asset.amount, amount_asset.last + obj_asset.last, amount_asset.to + obj_asset.to))
+				else:
+					setattr(obj, name, getattr(other, name)+getattr(obj, name))
 
 def load_config(new_obj, name):
     obj = getattr(config, name)

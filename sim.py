@@ -5,10 +5,13 @@ import sys
 import config
 import csv
 from io import StringIO
+
+
 from cow_sim import Cow_simulator
 from financial_models import Financial_model
 from price import Price_model
 from standard_sim import Standard_sim
+from parser import Parser
 
 
 #JSON to csv data
