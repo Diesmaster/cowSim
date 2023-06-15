@@ -85,3 +85,29 @@ class Parser():
 		writer.writeheader()
 		writer.writerows(data)
 		return csv_string.getvalue()
+
+	def res_to_data(res, list_wants):
+		ret = None
+		if type(res) == type({}):
+			ret = {}
+			for key, value in res.items():
+				pass_on = {}
+				pass_on[key] = value
+		
+				for want in list_wants:
+					if want == key:
+						ret[key] = value
+
+					ret1 = res_to_data(value, list_wants)
+				if not ret1 == {}:    
+					ret[key] = res_to_data(value, list_wants)
+
+				return ret
+		elif type(res) == type([]):
+			ret = []
+			for value in res: 
+				ret.append(res_to_data(value, list_wants))
+			return ret
+		else:
+			return {}
+		return ret

@@ -13,7 +13,6 @@ class cow_sim_config:
 	monthly_targeted_adg_kg_per_cattle = 30
 	cattle_bought_at_kg = 250
 	amount_max_capacity = 1000
-	amount_change_to_cycle_strat = 1001
 
 	#labor cons
 	cost_of_farmhand = 2500000

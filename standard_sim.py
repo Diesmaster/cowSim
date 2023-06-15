@@ -115,6 +115,81 @@ class Standard_sim:
 		self.sim.__add__ = self.get_add_func()
 
 
+	def get_config_vars(self):
+		obj = getattr(config, self.sim.config_name)
+		config_vars = dir(obj)
+
+		vars = {}
+		for var_name in config_vars:
+			if not var_name.startswith("__"):  # Exclude built-in variables
+				var_value = getattr(obj, var_name)
+				vars[var_name] = var_value
+    
+		return vars
+
+	def all_vars_analysis(self, sim_type, amount_of_increments, min_perc, max_perc, time_frame, n_experiment, filter_list, verbose=False):
+		vars = self.get_config_vars()
+
+		print(vars)
+
+		res = {}
+
+		for var in filter_list:
+			vars.pop(var)
+
+		for key in vars:
+			std_value = vars[key]
+			min_amount = std_value*(min_perc/100)
+			max_amount = std_value*(max_perc/100)
+
+			res[key] = self.var_analysis(sim_type, key, min_amount, max_amount, amount_of_increments, time_frame, n_experiment, verbose)
+
+		return res
+
+	def var_analysis(self, sim_type, config_var_name, min, max, amount_of_increments, time_frame, n_experiment, verbose=False):
+		if verbose  == True:
+			print("we are going to test the effect of var: " + str(config_var_name) + " by running the simulation over domain: " + str(min) + ", " + str(max))
+
+		obj = getattr(config, self.sim.config_name)
+		std_value = getattr(obj, config_var_name)
+	
+		if verbose  == True:
+			print("the standard value is: " + str(std_value) + ", " + "the time frame is: " + str(time_frame) + " cycles")
+	  
+		diff = max - min 
+		incr_size = diff/amount_of_increments
+
+		ret = []
+
+		for x in range(0, amount_of_increments):
+			res = []
+
+			for n in range(0, n_experiment):
+				value = min + (x*incr_size)
+
+				setattr(obj, config_var_name, value)
+				new_sim = sim_type()
+				std_sim = Standard_sim(new_sim)
+
+				res.append(new_sim.run_sim(time_frame))          
+				res[n]['value'] = value
+
+			err = 0
+			balance = 0
+			for result in res:
+				if not result['error'] == '':
+					err += 1
+				else:
+					balance += result['balance']
+	    
+			res = {'error':err/n_experiment, 'balance':balance/(n_experiment-err), 'value':res[0]['value']}
+			ret.append(res)
+	    
+		if verbose  == True:
+			print("run " + str(x) + " is finsihed, with " + str(config_var_name) + ": " + str(value))
+
+		return ret
+
 
 	def make_run_sim(self):
 		def run_sim(amount_cycles, change_con=None, change_func=None, verbose=False):
@@ -125,14 +200,13 @@ class Standard_sim:
 			ret = []
 
 			for x in range(0, int(amount_cycles*self.sim.cycle_length)):
-				
 				if (not change_con == None) and (not change_func == None):
 					if change_con() == True:
 						res = change_func()
 					
 						if verbose == True: 
 							ret.append(res)
-					
+							print(self)
 						return res
 
 				res = self.sim.pass_month()
@@ -142,7 +216,6 @@ class Standard_sim:
 				self.sim.n_month +=1
 
 				if not res['error'] == '':
-					
 					print(self.sim)
 					return res
 

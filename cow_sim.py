@@ -83,7 +83,8 @@ class Cow_simulator:
 
     def __init__(self, amount_invested=config.cow_sim_config.money_invested):
         ##need in here bc cannot be put in here before init function is called
-        standard_sim.load_config(self, 'cow_sim_config')
+        self.config_name = 'cow_sim_config' #REQ
+        standard_sim.load_config(self, self.config_name)
 
         # prices you need to call them prices_ at the start
         self.price_per_kg_normal = Price_model(self.price_per_kg_normal, exceptions={'6':self.price_per_kg_eid}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
