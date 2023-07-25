@@ -28,5 +28,7 @@ fin_mod = Financial_model(new_sim)
 std_sim = Standard_sim(new_sim)
 
 
-res = std_sim.all_vars_analysis(Cow_simulator, 3, 50, 200, 1, 10, [], True)
+#res = std_sim.all_vars_analysis  ( Cow_simulator, 3, 50, 200, 1, 10, [], True)
+res = new_sim.run_sim(int(sys.argv[1]), verbose=True)
+
 print(res)

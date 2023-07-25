@@ -10,9 +10,9 @@ class cow_sim_config:
 	price_of_concentraat_if_gt_100_decrease = 10
 
 	#cattle cons
-	monthly_targeted_adg_kg_per_cattle = 30
+	monthly_targeted_adg_kg_per_cattle = 36
 	cattle_bought_at_kg = 250
-	amount_max_capacity = 1000
+	amount_max_capacity = 600
 
 	#labor cons
 	cost_of_farmhand = 2500000
