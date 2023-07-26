@@ -1,3 +1,6 @@
+#class cli_config:
+#	sims = ["cow_sim"]
+
 #config constants
 class cow_sim_config:
 	#price cons

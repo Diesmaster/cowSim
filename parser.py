@@ -1,6 +1,6 @@
 class Parser():
 	# JSON to csv data
-	def flatten_dict(data, new_key=''):
+	def flatten_dict(self, data, new_key=''):
 		flattened_data = []
 
 		if type(data) == type({}):
@@ -10,7 +10,7 @@ class Parser():
 
 				if not new_key == '':
 					key = new_key + "_" + key
-					res1 = flatten_dict(value, key)
+					res1 = self.flatten_dict(value, key)
 
 					if type(res1) == type({}):
 						if res == None:
@@ -28,7 +28,7 @@ class Parser():
 			ret = []
 
 			for item in data:
-				res = flatten_dict(item, new_key)
+				res = self.flatten_dict(item, new_key)
 				ret.append(res)
 				return ret
 		else:
@@ -37,14 +37,14 @@ class Parser():
 
 		return flattened_data
 
-	def extract_keys(array):
+	def extract_keys(self, array):
 	    keys = set()
 	    for dictionary in array:
 	        keys.update(dictionary.keys())
 	    return list(keys)
 
-	def dict_to_csv_parser(data):
-		data = flatten_dict(data)
+	def dict_to_csv_parser(self, data):
+		data = self.flatten_dict(data)
 
 		csv_string = StringIO()
 
@@ -60,7 +60,7 @@ class Parser():
 					else:
 						big_array[index] = small_array
 
-					keys = extract_keys(big_array)
+					keys = self.extract_keys(big_array)
 
 					writer = csv.DictWriter(csv_string, fieldnames=keys if big_array else [])
 
@@ -86,7 +86,7 @@ class Parser():
 		writer.writerows(data)
 		return csv_string.getvalue()
 
-	def res_to_data(res, list_wants):
+	def res_to_data(self, res, list_wants):
 		ret = None
 		if type(res) == type({}):
 			ret = {}
@@ -98,15 +98,15 @@ class Parser():
 					if want == key:
 						ret[key] = value
 
-					ret1 = res_to_data(value, list_wants)
+					ret1 = self.res_to_data(value, list_wants)
 				if not ret1 == {}:    
-					ret[key] = res_to_data(value, list_wants)
+					ret[key] = self.res_to_data(value, list_wants)
 
 				return ret
 		elif type(res) == type([]):
 			ret = []
 			for value in res: 
-				ret.append(res_to_data(value, list_wants))
+				ret.append(self.res_to_data(value, list_wants))
 			return ret
 		else:
 			return {}
