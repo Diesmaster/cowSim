@@ -54,7 +54,7 @@ class Cow_simulator:
 
     def event_effect_change_feed(self):
         self.bool_feed_change = True
-        self.price_of_concentraat = Price_model(float(self.price_of_concentraat)*((100-self.price_of_concentraat_if_gt_100_decrease)/100), max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_of_concentraat = Price_model(float(self.price_of_concentraat)*((100-self.percentage_price_of_concentraat_if_gt_100_decrease)/100), max_up=1, max_down=1, distribution='normal', n_per_year=12)
         
 
     def event_effect_pass_month_start(self):
@@ -87,7 +87,8 @@ class Cow_simulator:
         standard_sim.load_config(self, self.config_name)
 
         # prices you need to call them prices_ at the start
-        self.price_per_kg_normal = Price_model(self.price_per_kg_normal, exceptions={'6':self.price_per_kg_eid}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_per_kg_eid = Price_model(self.price_per_kg_eid, max_up=1, max_down=1, distribution='normal', n_per_year=12)
+        self.price_per_kg_normal = Price_model(self.price_per_kg_normal, exceptions={'6':self.price_per_kg_eid.get_price()}, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.price_of_concentraat = Price_model(self.price_of_concentraat, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.price_per_cow_250kg = Price_model(self.price_per_cow_250kg, max_up=1, max_down=1, distribution='normal', n_per_year=12)
         self.price_of_grass = Price_model(self.price_of_grass, max_up=1, max_down=1, distribution='normal', n_per_year=12)
@@ -113,8 +114,6 @@ class Cow_simulator:
         self.n_buffer = 10 #REQ
         self.amount_balance = amount_invested #REQ
 
-        self.n_cycle_devider = self.cycle_length
-        self.n_cycles_per_year = 0
         self.bool_feed_change = False
 
         # the other type of var is amount

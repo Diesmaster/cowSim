@@ -1,5 +1,6 @@
 import math
 import random
+import config
 
 
 class Price_model:
@@ -19,6 +20,8 @@ class Price_model:
 			self.max_down = max_down
 			self.distribution = distribution
 			self.complex_price = True
+
+		self.percentage_inflation_per_year = config.price_config.percentage_inflation_per_year
 
 	def __int__(self):
 		return int(self.get_price())
@@ -57,6 +60,7 @@ class Price_model:
 	#if the last month had a price increase the next month will prob also have a price increase and visa-versa
 	def update_price(self):
 		price = self.get_price()
+		
 		if self.distribution == 'uniform':
 			price = self.get_uniform_change(price)
 		elif self.distribution == 'normal':
@@ -65,6 +69,7 @@ class Price_model:
 			print("distribution not in our program")
 			exit()
 
+		price = price*(1+self.percentage_inflation_per_year/100)
 		self.set_price(price, self.n_month)
 		return True
 

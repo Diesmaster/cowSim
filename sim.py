@@ -16,10 +16,13 @@ from standard_sim import Standard_sim
 from parser import Parser
 
 # TODO:
-# extend capabilities
 # make a boilerplate.py that is copyable to make more models
-# make more models
 # fix parser
+# add inflation
+# make more models
+# expand capabilities
+
+res = {}
 
 def get_substring_until_char(input_string, target_char):
     index = input_string.find(target_char)
@@ -66,9 +69,10 @@ if sys.argv[1] == "run":
     if option == '-v':
        verbose = True      
   
-    #todo help screen  
+
     elif option == "-h":
        print("args: amount of cycles")
+       exit()
 
 
   res = new_sim.run_sim(int(sys.argv[3]), verbose=verbose)
@@ -83,7 +87,7 @@ elif sys.argv[1] == "var_analysis":
     if option == '-v':
        verbose = True      
   
-    #todo help screen  
+
     elif option == "-h":
        print("args: amount_of_increments, min_perc, max_perc, amount_of_cycles, n_experiment, filter_list (as string) ")
        exit()
@@ -91,7 +95,7 @@ elif sys.argv[1] == "var_analysis":
   if len(sys.argv) < 7:
     print("missing arguments, try -h")
     exit()  
-
+data
   amount_of_increments =  int(sys.argv[3])
   min_perc = int(sys.argv[4]) 
   max_perc = int(sys.argv[5])
@@ -100,5 +104,9 @@ elif sys.argv[1] == "var_analysis":
   filter_list = json.loads(sys.argv[8])
 
   res = std_sim.all_vars_analysis  ( chosen_sim, amount_of_increments, min_perc, max_perc, amount_of_cycles, n_experiment, filter_list, verbose)
+  
 
 print(res)
+# pars = Parser()
+# res = pars.dict_to_csv_parser(res)
+# print(res)

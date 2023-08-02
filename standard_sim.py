@@ -46,6 +46,9 @@ def create_copy_func(obj_old, exception):
 		elif name[:13] == "amount_asset_":
 			asset_obj = getattr(obj_old, name)
 			setattr(new_obj, name, Asset(asset_obj.amount, asset_obj.last, asset_obj.to))
+		elif name[:5] == "price":
+			asset_obj = getattr(obj_old, name)
+			setattr(new_obj, name, Price_model(asset_obj.get_price(), max_up=asset_obj.max_up, max_down=asset_obj.max_down, distribution=asset_obj.distribution, n_per_year=asset_obj.n_per_year))
 	    	
 	Standard_sim(new_obj)
 	return new_obj

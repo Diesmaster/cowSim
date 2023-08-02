@@ -1,41 +1,55 @@
+from io import StringIO
+
+import csv
+
 class Parser():
 	# JSON to csv data
 	def flatten_dict(self, data, new_key=''):
-		flattened_data = []
+		#flattened_data = []
 
-		if type(data) == type({}):
-			res = None
+		"""if type(data) == type({}):
+			res = {}
 
 			for key, value in data.items():
+				if type(value) == type({}) or type(value) == type([]):
+					if not new_key == "":
+						key = new_key + "_" + key
 
-				if not new_key == '':
-					key = new_key + "_" + key
 					res1 = self.flatten_dict(value, key)
-
-					if type(res1) == type({}):
-						if res == None:
-							res = res1
-						else:
-							res = { **res, **res1 }
+					
+					if type(res1) == type([]):
+						res[key] = res1
 					else:
-						if res == None:
-							res = [res1]
+						res = {**res, **res1}
 				else:
-					res.append(res1)
-					return res
+					
+					if not new_key == "":
+						name = new_key +  "_" + key
+					else:
+						name = key
+					res[name] = value
+
+			return res
+		
+
+
 
 		elif type(data) == type([]):
 			ret = []
-
 			for item in data:
 				res = self.flatten_dict(item, new_key)
+				print(new_key + ", " + str(res) )
 				ret.append(res)
 				return ret
-		else:
-			return {new_key:data}
-
-
-		return flattened_data
+"""
+		flattened_dict = {}
+		for key, value_list in data.items():
+		    for idx, value_dict in enumerate(value_list):
+		        for inner_key, inner_value in value_dict.items():
+		            new_key = f"{key}_{idx}_{inner_key}"
+		            flattened_dict[new_key] = inner_value
+		
+		return flattened_dict
 
 	def extract_keys(self, array):
 	    keys = set()
@@ -44,47 +58,47 @@ class Parser():
 	    return list(keys)
 
 	def dict_to_csv_parser(self, data):
-		data = self.flatten_dict(data)
+		"""data = self.flatten_dict(data) # get out 1 to 1 relations
+		final_data = ""
+		keys = []
 
-		csv_string = StringIO()
+		print("\n")
+		print(data)
+		print("\n")
 
-		big_array = [{}]
-		for one_array in data:
-			if type(one_array) == type([]) and len(one_array) > 1: 
-
-				for index, small_array in enumerate(one_array):
-					if len(big_array) <= index:
-						big_array.append(small_array) 
-					elif type(big_array[index]) == type({}):
-						big_array[index] = {**big_array[index], **small_array}
-					else:
-						big_array[index] = small_array
-
-					keys = self.extract_keys(big_array)
-
-					writer = csv.DictWriter(csv_string, fieldnames=keys if big_array else [])
-
-					#writer = csv.DictWriter(csv_string, fieldnames=big_array[0].keys() if big_array else [])
-					writer.writeheader()
-					writer.writerows(big_array)
-					return csv_string.getvalue()  
-
-			elif len(data) == 1:
-				writer = csv.DictWriter(csv_string, fieldnames=one_array.keys() if one_array else [])
-				writer.writeheader()
-				writer.writerows(data)
-				return csv_string.getvalue()
-
+		#print headers
+		for key, value in data[0].items():
+			if final_data == "":
+				final_data = key
 			else:
-				writer = csv.DictWriter(csv_string, fieldnames=one_array.keys() if one_array else [])
-				writer.writeheader()
-				writer.writerows(one_array)
-				return csv_string.getvalue()
+				final_data = final_data + "," + key
 
-		writer = csv.DictWriter(csv_string, fieldnames=data[0].keys() if data else [])
+			keys.append(key)
+
+		final_data = final_data + "\n"
+
+		#print data
+		#for array in data:
+		#	for key in keys:
+
+		#		value = array.get(key)
+		#		
+		#		final_data = final_data  + "," + str(value)
+
+		#	final_data = final_data + "\n"
+			"""
+
+		print(data)
+
+		csv_buffer = StringIO()
+		#writer = csv.writer(csv_buffer)
+		writer = csv.DictWriter(csv_buffer, fieldnames=data.keys())
 		writer.writeheader()
 		writer.writerows(data)
-		return csv_string.getvalue()
+		csv_string = csv_buffer.getvalue()
+		csv_buffer.close()
+		return csv_string
+		
 
 	def res_to_data(self, res, list_wants):
 		ret = None

@@ -10,7 +10,6 @@ class cow_sim_config:
 	price_of_grass = 500
 	price_fermented_poop = 1200
 	price_per_kg_eid = 6000
-	price_of_concentraat_if_gt_100_decrease = 10
 
 	#cattle cons
 	monthly_targeted_adg_kg_per_cattle = 36
@@ -30,6 +29,7 @@ class cow_sim_config:
 	percentage_of_concentraat_dry = 80
 	percentage_of_dry_matter_grass = 40
 	percentage_of_grass_dry = 20
+	percentage_price_of_concentraat_if_gt_100_decrease = 10
 
 	#poop cons
 	percentage_poop_dry = 25
@@ -43,4 +43,7 @@ class cow_sim_config:
 #finance config
 class fin_mod_config:
 	percentage_own = 60
+
+class price_config:
+	percentage_inflation_per_year = 6.5
 
